@@ -24,7 +24,8 @@ export default class Index extends wepy.page {
   mixins = [];
 
   data = {
-    swiperList: [] // 轮播图列表
+    swiperList: [], // 轮播图列表
+    categoryList: []// 分类列表
   };
 
   computed = {};
@@ -35,6 +36,7 @@ export default class Index extends wepy.page {
 
   onLoad() {
     this.loadSwiper()
+    this.loadCategorys()
   }
 
   // 请求轮播图
@@ -54,6 +56,24 @@ export default class Index extends wepy.page {
 
     // 请求成功
     this.swiperList = res.message
+    this.$apply()
+  }
+
+  // 请求分类
+  async loadCategorys () {
+    const {data: res} = await wepy.request({
+      url: 'https://uinav.com/api/public/v1/home/catitems'
+    })
+    // 请求失败,提醒用户
+    if (res.meta.status !== 200) {
+      return wepy.showToast({
+        title: '请求失败',
+        icon: 'none'
+      })
+    }
+
+    // 请求成功
+    this.categoryList = res.message
     this.$apply()
   }
 }
