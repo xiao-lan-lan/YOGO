@@ -1,6 +1,5 @@
 <template>
   <view class="container">
-
     <!-- 轮播图 -->
     <swiper indicator-dots autoplay circular class="swiper-list">
       <swiper-item wx:for="{{swiperList}}" wx:key="index" class="swiper-item">
@@ -31,16 +30,13 @@
 
     <!-- 楼层 -->
     <view class="floor-list">
-
       <!-- 每个楼层 -->
       <view class="floor-item" wx:for="{{floorList}}" wx:key="index">
-
         <!-- 标题图片 -->
         <image class="title" src="{{item.floor_title.image_src}}"></image>
 
         <!-- 下方图片 -->
         <view class="product">
-
           <!-- 左侧大图 -->
           <navigator
             class="left"
@@ -76,7 +72,6 @@
         </view>
       </view>
     </view>
-
   </view>
 </template>
 
@@ -110,9 +105,7 @@ export default class Index extends wepy.page {
   // 请求轮播图
   async loadSwiper() {
     // 对象解构重命名
-    const { data: res } = await wepy.request({
-      url: 'https://uinav.com/api/public/v1/home/swiperdata'
-    })
+    const { data: res } = await wepy.get('/home/swiperdata')
 
     // 请求失败,提醒用户
     if (res.meta.status !== 200) {
@@ -126,9 +119,8 @@ export default class Index extends wepy.page {
 
   // 请求分类
   async loadCategorys() {
-    const { data: res } = await wepy.request({
-      url: 'https://uinav.com/api/public/v1/home/catitems'
-    })
+    const { data: res } = await wepy.get('/home/catitems')
+
     // 请求失败,提醒用户
     if (res.meta.status !== 200) {
       return wepy.myToast('请求失败')
@@ -141,9 +133,7 @@ export default class Index extends wepy.page {
 
   // 请求楼层
   async loadFloor() {
-    const { data: res } = await wepy.request({
-      url: 'https://uinav.com/api/public/v1/home/floordata'
-    })
+    const { data: res } = await wepy.get('/home/floordata')
     // 请求失败
     if (res.meta.status !== 200) {
       return wepy.myToast('请求失败')
