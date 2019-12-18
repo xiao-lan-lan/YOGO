@@ -17,7 +17,7 @@
     mixins = []
 
     data = {
-  
+      cateList: []// 一级分类
     }
 
     computed = {
@@ -33,7 +33,19 @@
     }
 
     onLoad() {
-  
+      this.loadCategories()
+    }
+
+    // 请求分类
+    async loadCategories() {
+      const {data: res} = await wepy.get('/categories')
+      // 请求失败
+      if (res.meta.status !== 200) {
+        return wepy.myToast('请求失败')
+      }
+      // 请求成功
+      this.cateList = res.message
+      this.$apply()
     }
   }
 </script>
