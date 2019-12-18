@@ -31,7 +31,7 @@
 
     <!-- 楼层 -->
     <view class="floor-list">
-      
+
       <!-- 每个楼层 -->
       <view class="floor-item" wx:for="{{floorList}}" wx:key="index">
 
@@ -116,10 +116,7 @@ export default class Index extends wepy.page {
 
     // 请求失败,提醒用户
     if (res.meta.status !== 200) {
-      return wepy.showToast({
-        title: '请求失败',
-        icon: 'none'
-      })
+      return wepy.myToast('请求失败')
     }
 
     // 请求成功
@@ -134,10 +131,7 @@ export default class Index extends wepy.page {
     })
     // 请求失败,提醒用户
     if (res.meta.status !== 200) {
-      return wepy.showToast({
-        title: '请求失败',
-        icon: 'none'
-      })
+      return wepy.myToast('请求失败')
     }
 
     // 请求成功
@@ -152,10 +146,7 @@ export default class Index extends wepy.page {
     })
     // 请求失败
     if (res.meta.status !== 200) {
-      return wepy.showToast({
-        title: '请求失败',
-        icon: 'none'
-      })
+      return wepy.myToast('请求失败')
     }
     // 请求成功
     this.floorList = res.message
