@@ -4,9 +4,9 @@
     <!-- 轮播图 -->
     <swiper indicator-dots autoplay circular class="swiper-list">
       <swiper-item wx:for="{{swiperList}}" wx:key="index" class="swiper-item">
-        <navigator 
-          url="{{item.navigator_url}}" 
-          open_type="{{item.navigate}}" 
+        <navigator
+          url="{{item.navigator_url}}"
+          open_type="{{item.navigate}}"
           hover-class="none"
         >
           <image src="{{item.image_src}}"></image>
@@ -17,18 +17,65 @@
     <!-- 分类 -->
     <view class="cate-list">
       <view class="cate-item" wx:for="{{categoryList}}" wx:key="index">
-        <navigator 
-          wx:if="{{item.open_type}}" 
-          url="/pages/tabs/cate" 
+        <navigator
+          wx:if="{{item.open_type}}"
+          url="/pages/tabs/cate"
           open-type="{{item.open_type}}"
           hover-class="none"
         >
-          <image src="{{item.image_src}}" mode="widthFix" ></image>
+          <image src="{{item.image_src}}" mode="widthFix"></image>
         </navigator>
         <image src="{{item.image_src}}" mode="widthFix" wx:else></image>
       </view>
     </view>
 
+    <!-- 楼层 -->
+    <view class="floor-list">
+      
+      <!-- 每个楼层 -->
+      <view class="floor-item" wx:for="{{floorList}}" wx:key="index">
+
+        <!-- 标题图片 -->
+        <image class="title" src="{{item.floor_title.image_src}}"></image>
+
+        <!-- 下方图片 -->
+        <view class="product">
+
+          <!-- 左侧大图 -->
+          <navigator
+            class="left"
+            url="{{item.product_list[0].navigator_url}}"
+            open-type="{{item.product_list[0].open_type}}"
+            hover-class="none"
+          >
+            <image
+              src="{{item.product_list[0].image_src}}"
+              style="width:{{item.product_list[0].image_width}}rpx"
+              mode="widthFix"
+            ></image>
+          </navigator>
+
+          <!-- 右侧小图 -->
+          <view class="right">
+            <navigator
+              wx:for="{{item.product_list}}"
+              wx:key="index"
+              url="{{item.navigator_url}}"
+              open-type="{{item.open_type}}"
+              hover-class="none"
+            >
+              <block wx:if="{{index>0}}">
+                <image
+                  src="{{item.image_src}}"
+                  style="width:{{item.image_width}}rpx"
+                  mode="widthFix"
+                ></image>
+              </block>
+            </navigator>
+          </view>
+        </view>
+      </view>
+    </view>
 
   </view>
 </template>
@@ -45,7 +92,7 @@ export default class Index extends wepy.page {
   data = {
     swiperList: [], // 轮播图列表
     categoryList: [], // 分类列表
-    floorList: []// 楼层列表
+    floorList: [] // 楼层列表
   };
 
   computed = {};
@@ -81,8 +128,8 @@ export default class Index extends wepy.page {
   }
 
   // 请求分类
-  async loadCategorys () {
-    const {data: res} = await wepy.request({
+  async loadCategorys() {
+    const { data: res } = await wepy.request({
       url: 'https://uinav.com/api/public/v1/home/catitems'
     })
     // 请求失败,提醒用户
@@ -100,7 +147,7 @@ export default class Index extends wepy.page {
 
   // 请求楼层
   async loadFloor() {
-    const {data: res} = await wepy.request({
+    const { data: res } = await wepy.request({
       url: 'https://uinav.com/api/public/v1/home/floordata'
     })
     // 请求失败
@@ -131,11 +178,34 @@ export default class Index extends wepy.page {
 .cate-list {
   display: flex;
   justify-content: space-around;
-  height: 220rpx;
+  align-content: space-around;
+  height: 200rpx;
   padding: 30rpx 0;
   .cate-item {
     image {
       width: 140rpx;
+    }
+  }
+}
+
+.floor-list {
+  .floor-item {
+    margin-bottom: 20rpx;
+    .title {
+      width: 100%;
+      height: 55rpx;
+    }
+    .product {
+      display: flex;
+      padding: 10rpx;
+      .left {
+        margin-right: 10rpx;
+      }
+      .right {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
     }
   }
 }
