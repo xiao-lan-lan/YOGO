@@ -1,39 +1,48 @@
 <template>
-  <view class="container">
-    首页
-  </view>
+  <view class="container"></view>
 </template>
 
 <script>
-  import wepy from 'wepy'
+import wepy from 'wepy'
 
-  export default class Index extends wepy.page {
-    config = {
-  
-    }
-    components = {
-    }
+export default class Index extends wepy.page {
+  config = {};
+  components = {};
 
-    mixins = []
+  mixins = [];
 
-    data = {
-  
-    }
+  data = {
+    swiperList: [] // 轮播图列表
+  };
 
-    computed = {
-  
-    }
+  computed = {};
 
-    methods = {
-  
-    }
+  methods = {};
 
-    events = {
-  
-    }
+  events = {};
 
-    onLoad() {
-  
-    }
+  onLoad() {
+    this.loadSwiper()
   }
+
+  // 请求轮播图
+  async loadSwiper() {
+    // 对象解构重命名
+    const { data: res } = await wepy.request({
+      url: 'https://uinav.com/api/public/v1/home/swiperdata'
+    })
+
+    // 请求失败,提醒用户
+    if (res.meta.status !== 200) {
+      return wepy.showToast({
+        title: '请求失败',
+        icon: 'none'
+      })
+    }
+
+    // 请求成功
+    this.swiperList = res.message
+    this.$apply()
+  }
+}
 </script>
