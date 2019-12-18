@@ -1,51 +1,146 @@
 <template>
   <view class="container">
-    分类
+    <!-- 左侧 -->
+    <scroll-view scroll-y class="left" style="height:{{wh}}px">
+      <view>-------------------</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>nnn</view>
+      <view>------------------</view>
+    </scroll-view>
+
+    <!-- 右侧 -->
+    <scroll-view scroll-y class="right" style="height:{{wh}}px">
+      <view>-------------------</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+      <view>mmm</view>
+
+      <view>------------------</view>
+    </scroll-view>
   </view>
 </template>
 
 <script>
-  import wepy from 'wepy'
+import wepy from 'wepy'
 
-  export default class Index extends wepy.page {
-    config = {
-  
-    }
-    components = {
-    }
+export default class Index extends wepy.page {
+  config = {};
+  components = {};
 
-    mixins = []
+  mixins = [];
 
-    data = {
-      cateList: []// 一级分类
-    }
+  data = {
+    cateList: [], // 所有分类
+    wh: 0// 可视高度
+  };
 
-    computed = {
-  
-    }
+  computed = {};
 
-    methods = {
-  
-    }
+  methods = {};
 
-    events = {
-  
-    }
+  events = {};
 
-    onLoad() {
-      this.loadCategories()
-    }
-
-    // 请求分类
-    async loadCategories() {
-      const {data: res} = await wepy.get('/categories')
-      // 请求失败
-      if (res.meta.status !== 200) {
-        return wepy.myToast('请求失败')
-      }
-      // 请求成功
-      this.cateList = res.message
-      this.$apply()
-    }
+  onLoad() {
+    this.loadCategories()
+    this.getWindowHeight()
   }
+
+  // 请求分类
+  async loadCategories() {
+    const { data: res } = await wepy.get('/categories')
+    // 请求失败
+    if (res.meta.status !== 200) {
+      return wepy.myToast('请求失败')
+    }
+    // 请求成功
+    this.cateList = res.message
+    this.$apply()
+  }
+
+  // 获取可视高度
+  async getWindowHeight() {
+    const res = await wepy.getSystemInfoSync()
+    this.wh = res.windowHeight
+    this.$apply()
+  }
+}
 </script>
+
+<style lang="less">
+.container {
+  display: flex;
+  .left {
+    width: 200rpx;
+  }
+  .right {
+    flex: 1;
+  }
+}
+</style>
