@@ -12,7 +12,7 @@
     </scroll-view>
 
     <!-- 右侧 -->
-    <scroll-view scroll-y class="right" style="height:{{wh}}px">
+    <scroll-view scroll-y class="right" style="height:{{wh}}px" scroll-top="{{scrollTop}}">
       <!-- 二级分类 -->
       <view wx:for="{{cateLevel2}}" wx:key="index" class="cat-level2">
         / <text style="margin:0 20rpx">{{ item.cat_name }}</text> /
@@ -46,7 +46,8 @@ export default class Index extends wepy.page {
   data = {
     cateList: [], // 所有分类
     wh: 0, // 可视高度
-    cateLevel2: [] // 二级分类
+    cateLevel2: [], // 二级分类
+    scrollTop: 0// 滚动条位置
   };
 
   computed = {};
@@ -54,7 +55,11 @@ export default class Index extends wepy.page {
   methods = {
     // 一级分类切换
     onCateChange(e) {
+      // 转存二级分类
       this.cateLevel2 = this.cateList[e.detail].children
+
+      // 重置滚动条位置,重新给0不起作用,负值还是从0开始
+      this.scrollTop = this.scrollTop - 1
     }
   };
 
