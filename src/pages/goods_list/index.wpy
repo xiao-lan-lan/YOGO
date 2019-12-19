@@ -67,6 +67,9 @@ export default class Index extends wepy.page {
 
   // 触底事件
   onReachBottom() {
+    if (this.GoodsListParams.pagenum >= Math.ceil(this.totalGoods / this.GoodsListParams.pagesize)) {
+      return wepy.myToast('没有更多了')
+    }
     this.GoodsListParams.pagenum += 1
     this.loadGoodsList()
   }
