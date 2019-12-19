@@ -61,6 +61,13 @@ export default class extends wepy.app {
       color: '#000',
       selectedColor: '#d81e06',
       borderStyle: 'black'
+    },
+
+    // 使用组件
+    usingComponents: {
+      // 侧边导航
+      'van-sidebar': './assets/vant/sidebar/index',
+      'van-sidebar-item': './assets/vant/sidebar-item/index'
     }
   }
 

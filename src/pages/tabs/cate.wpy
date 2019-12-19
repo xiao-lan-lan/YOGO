@@ -2,87 +2,29 @@
   <view class="container">
     <!-- 左侧 -->
     <scroll-view scroll-y class="left" style="height:{{wh}}px">
-      <view>-------------------</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>nnn</view>
-      <view>------------------</view>
+      <van-sidebar>
+        <van-sidebar-item wx:for="{{cateList}}" wx:key="index" title="{{ item.cat_name }}" />
+      </van-sidebar>
     </scroll-view>
 
     <!-- 右侧 -->
     <scroll-view scroll-y class="right" style="height:{{wh}}px">
-      <view>-------------------</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-      <view>mmm</view>
-
-      <view>------------------</view>
+      <view
+        wx:for="{{cateList}}"
+        wx:key="index"
+        style="border-bottom:1rpx solid #ccc"
+      >
+        <view wx:for="{{item.children}}" wx:key="index">
+          {{ item.cat_name }}
+          <block wx:for="{{item.children}}" wx:key="index">
+            {{ item.cat_name }}
+            <image
+              src="{{item.cat_icon}}"
+              style="width:80rpx;height:80rpx"
+            ></image>
+          </block>
+        </view>
+      </view>
     </scroll-view>
   </view>
 </template>
@@ -98,12 +40,13 @@ export default class Index extends wepy.page {
 
   data = {
     cateList: [], // 所有分类
-    wh: 0// 可视高度
+    wh: 0 // 可视高度
   };
 
   computed = {};
 
-  methods = {};
+  methods = {
+  };
 
   events = {};
 
@@ -137,7 +80,7 @@ export default class Index extends wepy.page {
 .container {
   display: flex;
   .left {
-    width: 200rpx;
+    width: 90px;
   }
   .right {
     flex: 1;
