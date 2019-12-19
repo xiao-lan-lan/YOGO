@@ -55,6 +55,13 @@
 					"pathName": "pages/goods_detail/index",
 					"query": "goods_id=43986",
 					"scene": null
+				},
+				{
+					"id": 3,
+					"name": "pages/tabs/search",
+					"pathName": "pages/tabs/search",
+					"query": "",
+					"scene": null
 				}
 			]
 		}

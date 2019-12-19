@@ -1,39 +1,58 @@
 <template>
   <view class="container">
-    搜索
+
+    <!-- 搜索框 -->
+    <van-search
+      value="{{ SearchText }}"
+      placeholder="请输入搜索关键词"
+      show-action
+      @search="onSearch"
+      @cancel="onCancel"
+    >
+    </van-search>
   </view>
 </template>
 
 <script>
-  import wepy from 'wepy'
+import wepy from 'wepy'
 
-  export default class Index extends wepy.page {
-    config = {
-  
-    }
-    components = {
-    }
+export default class Index extends wepy.page {
+  config = {};
+  components = {};
 
-    mixins = []
+  mixins = [];
 
-    data = {
-  
-    }
+  data = {
+    SearchText: '', // 搜索关键字
+    SearchList: [] // 搜索结果列表
+  };
 
-    computed = {
-  
-    }
+  computed = {};
 
-    methods = {
-  
-    }
+  methods = {
+    // 搜索关键字
+    async onSearch(e) {
+      this.SearchText = e.detail
+      const { data: res } = await wepy.get('/goods/qsearch', {
+        query: this.SearchText
+      })
 
-    events = {
-  
-    }
+      // 请求失败
+      if (res.meta.status !== 200) {
+        return wepy.myToast()
+      }
 
-    onLoad() {
-  
-    }
-  }
+      // 请求成功
+      this.SearchList = res.message
+      this.$apply()
+    },
+
+    // 取消
+    onCancel() {}
+  };
+
+  events = {};
+
+  onLoad() {}
+}
 </script>

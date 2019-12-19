@@ -77,7 +77,9 @@ export default class extends wepy.app {
       // 商品导航
       'van-goods-action': './assets/vant/goods-action/index',
       'van-goods-action-icon': './assets/vant/goods-action-icon/index',
-      'van-goods-action-button': './assets/vant/goods-action-button/index'
+      'van-goods-action-button': './assets/vant/goods-action-button/index',
+      // 搜索
+      'van-search': './assets/vant/search/index'
     }
   };
 
