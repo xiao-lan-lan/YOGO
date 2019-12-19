@@ -15,7 +15,10 @@
 import wepy from 'wepy'
 
 export default class Index extends wepy.page {
-  config = {};
+  config = {
+    'navigationBarTitleText': '商品列表',
+    'onReachBottomDistance': 100
+  };
   components = {};
 
   mixins = [];
@@ -38,11 +41,6 @@ export default class Index extends wepy.page {
   events = {};
 
   onLoad(val) {
-    // 修改顶部标题
-    wepy.setNavigationBarTitle({
-      title: '商品列表'
-    })
-
     console.log(val)
     // 把跳转传过来的参数,解构到商品列表参数里
     this.GoodsListParams = { ...this.GoodsListParams, ...val }
@@ -62,9 +60,15 @@ export default class Index extends wepy.page {
     }
 
     // 请求成功
-    this.GoodsList = res.message.goods
+    this.GoodsList = [...this.GoodsList, ...res.message.goods]
     this.totalGoods = res.message.total
     this.$apply()
+  }
+
+  // 触底事件
+  onReachBottom() {
+    this.GoodsListParams.pagenum += 1
+    this.loadGoodsList()
   }
 }
 </script>
