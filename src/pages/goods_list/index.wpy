@@ -67,6 +67,7 @@ export default class Index extends wepy.page {
 
   // 触底事件
   onReachBottom() {
+    // 判断请求的页码是否大于总条数对应的页码,大于则不再请求,提示用户
     if (this.GoodsListParams.pagenum >= Math.ceil(this.totalGoods / this.GoodsListParams.pagesize)) {
       return wepy.myToast('没有更多了')
     }
