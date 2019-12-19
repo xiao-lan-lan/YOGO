@@ -17,6 +17,15 @@
     mixins = []
 
     data = {
+
+      // 商品列表参数对象
+      GoodsListParams: {
+        pagenum: 1, // 页码
+        pagesize: 10// 页容量
+      },
+  
+      GoodsList: [], // 商品列表数据
+      totalGoods: 0// 总商品条数
   
     }
 
@@ -34,6 +43,26 @@
 
     onLoad(val) {
       console.log(val)
+      // 把跳转传过来的参数,解构到商品列表参数里
+      this.GoodsListParams = {...this.GoodsListParams, ...val}
+      this.loadGoodsList()
+    }
+
+    // 请求商品列表
+    async loadGoodsList() {
+    // 解构 data
+      const {data: res} = await wepy.get('/goods/search', this.GoodsListParams)
+
+      console.log(res)
+  
+    // 请求失败
+      if (res.meta.status !== 200) {
+        return wepy.myToast()
+      }
+
+      // 请求成功
+      this.GoodsList = res.message.goods
+      this.totalGoods = res.message.total
     }
   }
 </script>
