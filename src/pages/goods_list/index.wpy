@@ -31,7 +31,8 @@ export default class Index extends wepy.page {
     },
 
     GoodsList: [], // 商品列表数据
-    totalGoods: 0 // 总商品条数
+    totalGoods: 0, // 总商品条数
+    isloading: false// 下拉加载中
   };
 
   computed = {};
@@ -62,6 +63,8 @@ export default class Index extends wepy.page {
     // 请求成功
     this.GoodsList = [...this.GoodsList, ...res.message.goods]
     this.totalGoods = res.message.total
+    // 请求完成，结束加载状态
+    this.isloading = false
     this.$apply()
   }
 
@@ -71,6 +74,15 @@ export default class Index extends wepy.page {
     if (this.GoodsListParams.pagenum >= Math.ceil(this.totalGoods / this.GoodsListParams.pagesize)) {
       return wepy.myToast('没有更多了')
     }
+
+    // 判断是否有加载中的请求，有则不再发起
+    if (this.isloading) {
+      return wepy.myToast('正在加载中，请稍等')
+    }
+
+    // 触底，说明加载状态中
+    this.isloading = true
+
     this.GoodsListParams.pagenum += 1
     this.loadGoodsList()
   }
