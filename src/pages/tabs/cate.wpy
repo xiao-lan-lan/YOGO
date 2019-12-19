@@ -3,18 +3,32 @@
     <!-- 左侧 -->
     <scroll-view scroll-y class="left" style="height:{{wh}}px">
       <van-sidebar @change="onCateChange">
-        <van-sidebar-item wx:for="{{cateList}}" wx:key="index" title="{{ item.cat_name }}" />
+        <van-sidebar-item
+          wx:for="{{cateList}}"
+          wx:key="index"
+          title="{{ item.cat_name }}"
+        />
       </van-sidebar>
     </scroll-view>
 
     <!-- 右侧 -->
     <scroll-view scroll-y class="right" style="height:{{wh}}px">
-      <view
-        wx:for="{{cateLevel2}}"
-        wx:key="index"
-        class="cat-level2"
-      >
+      <!-- 二级分类 -->
+      <view wx:for="{{cateLevel2}}" wx:key="index" class="cat-level2">
         / <text style="margin:0 20rpx">{{ item.cat_name }}</text> /
+
+        <!-- 三级分类 -->
+        <view class="cat-level3">
+          <view wx:for="{{item.children}}" wx:key="index">
+            <image
+              src="{{item.cat_icon}}"
+              mode="widthFix"
+            ></image>
+            <text>
+              {{ item.cat_name }}
+            </text>
+          </view>
+        </view>
       </view>
     </scroll-view>
   </view>
@@ -32,18 +46,16 @@ export default class Index extends wepy.page {
   data = {
     cateList: [], // 所有分类
     wh: 0, // 可视高度
-    cateLevel2: []// 二级分类
+    cateLevel2: [] // 二级分类
   };
 
   computed = {};
 
   methods = {
-
     // 一级分类切换
     onCateChange(e) {
       this.cateLevel2 = this.cateList[e.detail].children
     }
-
   };
 
   events = {};
@@ -85,6 +97,29 @@ export default class Index extends wepy.page {
     flex: 1;
     .cat-level2 {
       text-align: center;
+      margin: 30rpx 0;
+      .cat-level3 {
+        display: flex;
+        flex-wrap: wrap;
+        border-bottom: 1rpx solid #eee;
+        margin: 30rpx 0;
+        view {
+          flex: 33.33%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: 30rpx;
+          
+          image {
+            width: 120rpx;
+          }
+          text {
+            font-size: 24rpx;
+            line-height: 10rpx;
+          }
+        }
+      }
     }
   }
 }
