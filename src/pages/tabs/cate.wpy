@@ -2,7 +2,7 @@
   <view class="container">
     <!-- 左侧 -->
     <scroll-view scroll-y class="left" style="height:{{wh}}px">
-      <van-sidebar>
+      <van-sidebar @change="onCateChange">
         <van-sidebar-item wx:for="{{cateList}}" wx:key="index" title="{{ item.cat_name }}" />
       </van-sidebar>
     </scroll-view>
@@ -10,20 +10,11 @@
     <!-- 右侧 -->
     <scroll-view scroll-y class="right" style="height:{{wh}}px">
       <view
-        wx:for="{{cateList}}"
+        wx:for="{{cateLevel2}}"
         wx:key="index"
-        style="border-bottom:1rpx solid #ccc"
+        class="cat-level2"
       >
-        <view wx:for="{{item.children}}" wx:key="index">
-          {{ item.cat_name }}
-          <block wx:for="{{item.children}}" wx:key="index">
-            {{ item.cat_name }}
-            <image
-              src="{{item.cat_icon}}"
-              style="width:80rpx;height:80rpx"
-            ></image>
-          </block>
-        </view>
+        / <text style="margin:0 20rpx">{{ item.cat_name }}</text> /
       </view>
     </scroll-view>
   </view>
@@ -40,12 +31,19 @@ export default class Index extends wepy.page {
 
   data = {
     cateList: [], // 所有分类
-    wh: 0 // 可视高度
+    wh: 0, // 可视高度
+    cateLevel2: []// 二级分类
   };
 
   computed = {};
 
   methods = {
+
+    // 一级分类切换
+    onCateChange(e) {
+      this.cateLevel2 = this.cateList[e.detail].children
+    }
+
   };
 
   events = {};
@@ -64,6 +62,7 @@ export default class Index extends wepy.page {
     }
     // 请求成功
     this.cateList = res.message
+    this.cateLevel2 = res.message[0].children
     this.$apply()
   }
 
@@ -84,6 +83,9 @@ export default class Index extends wepy.page {
   }
   .right {
     flex: 1;
+    .cat-level2 {
+      text-align: center;
+    }
   }
 }
 </style>
