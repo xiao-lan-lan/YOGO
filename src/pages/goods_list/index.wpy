@@ -1,68 +1,76 @@
 <template>
   <view class="container">
-    商品列表
+    <block wx:for="{{GoodsList}}" wx:key="index">
+      <van-card
+      num="{{item.goods_number}}"
+      price="{{item.goods_price}}"
+      title="{{item.goods_name}}"
+      thumb="{{ item.goods_small_logo }}"
+    />
+    </block>
   </view>
 </template>
 
 <script>
-  import wepy from 'wepy'
+import wepy from 'wepy'
 
-  export default class Index extends wepy.page {
-    config = {
-  
-    }
-    components = {
-    }
+export default class Index extends wepy.page {
+  config = {};
+  components = {};
 
-    mixins = []
+  mixins = [];
 
-    data = {
+  data = {
+    // 商品列表参数对象
+    GoodsListParams: {
+      pagenum: 1, // 页码
+      pagesize: 10 // 页容量
+    },
 
-      // 商品列表参数对象
-      GoodsListParams: {
-        pagenum: 1, // 页码
-        pagesize: 10// 页容量
-      },
-  
-      GoodsList: [], // 商品列表数据
-      totalGoods: 0// 总商品条数
-  
-    }
+    GoodsList: [], // 商品列表数据
+    totalGoods: 0 // 总商品条数
+  };
 
-    computed = {
-  
-    }
+  computed = {};
 
-    methods = {
-  
-    }
+  methods = {};
 
-    events = {
-  
-    }
+  events = {};
 
-    onLoad(val) {
-      console.log(val)
-      // 把跳转传过来的参数,解构到商品列表参数里
-      this.GoodsListParams = {...this.GoodsListParams, ...val}
-      this.loadGoodsList()
-    }
+  onLoad(val) {
+    // 修改顶部标题
+    wepy.setNavigationBarTitle({
+      title: '商品列表'
+    })
 
-    // 请求商品列表
-    async loadGoodsList() {
-    // 解构 data
-      const {data: res} = await wepy.get('/goods/search', this.GoodsListParams)
-
-      console.log(res)
-  
-    // 请求失败
-      if (res.meta.status !== 200) {
-        return wepy.myToast()
-      }
-
-      // 请求成功
-      this.GoodsList = res.message.goods
-      this.totalGoods = res.message.total
-    }
+    console.log(val)
+    // 把跳转传过来的参数,解构到商品列表参数里
+    this.GoodsListParams = { ...this.GoodsListParams, ...val }
+    this.loadGoodsList()
   }
+
+  // 请求商品列表
+  async loadGoodsList() {
+    // 解构 data
+    const { data: res } = await wepy.get('/goods/search', this.GoodsListParams)
+
+    console.log(res)
+
+    // 请求失败
+    if (res.meta.status !== 200) {
+      return wepy.myToast()
+    }
+
+    // 请求成功
+    this.GoodsList = res.message.goods
+    this.totalGoods = res.message.total
+    this.$apply()
+  }
+}
 </script>
+
+<style lang="less">
+.van-card {
+  border-bottom: 1rpx solid #fff
+}
+</style>
