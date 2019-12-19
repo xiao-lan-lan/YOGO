@@ -1,57 +1,99 @@
 <template>
   <view class="container">
-    商品详情
+    <!-- 轮播图 -->
+    <swiper indicator-dots autoplay circular class="swiper-list">
+      <swiper-item wx:for="{{GoodDetail.pics}}" wx:key="index">
+        <image src="{{item.pics_big_url}}" mode="widthFix"></image>
+      </swiper-item>
+    </swiper>
+
+    <!-- 价格 -->
+    <van-cell-group>
+      <van-cell title="￥{{GoodDetail.goods_price}}" class="goods-price" />
+      <van-cell
+        title="{{GoodDetail.goods_name}}"
+        label="快递：免运费"
+        border="{{ false }}"
+      >
+        <view class="collect">
+          <!-- <van-icon name="star-o"  class="custom-icon"/> -->
+          <van-icon
+            slot="right-icon"
+            name="star-o"
+            class="custom-icon"
+            size="50rpx"
+          />
+          <view>收藏</view>
+        </view>
+      </van-cell>
+    </van-cell-group>
+
+    <!-- 商品图文 -->
+    <rich-text nodes="{{GoodDetail.goods_introduce}}"></rich-text>
+
+    <!-- 加入购物车 -->
+    <van-goods-action>
+      <van-goods-action-icon icon="chat-o" text="客服" dot />
+      <van-goods-action-icon icon="cart-o" text="购物车" info="5" />
+      <van-goods-action-button text="加入购物车" type="warning" />
+      <van-goods-action-button text="立即购买" />
+    </van-goods-action>
   </view>
 </template>
 
 <script>
-  import wepy from 'wepy'
+import wepy from 'wepy'
 
-  export default class Index extends wepy.page {
-    config = {
-  
-    }
-    components = {
-    }
+export default class Index extends wepy.page {
+  config = {};
+  components = {};
 
-    mixins = []
+  mixins = [];
 
-    data = {
-      GoodID: '', // 商品ID
-      GoodDetail: null// 商品详情
-    }
+  data = {
+    GoodID: '', // 商品ID
+    GoodDetail: null // 商品详情
+  };
 
-    computed = {
-  
-    }
+  computed = {};
 
-    methods = {
-  
-    }
+  methods = {};
 
-    events = {
-  
-    }
+  events = {};
 
-    onLoad(val) {
-      this.GoodID = val.goods_id
-      this.loadGoodDetail()
-    }
-
-    // 请求商品详情
-    async loadGoodDetail() {
-      const {data: res} = await wepy.get('/goods/detail', {
-        goods_id: this.GoodID
-      })
-
-      // 请求失败
-      if (res.meta.status !== 200) {
-        return wepy.myToast()
-      }
-
-      // 请求成功
-      this.GoodDetail = res.message
-      this.$apply()
-    }
+  onLoad(val) {
+    this.GoodID = val.goods_id
+    this.loadGoodDetail()
   }
+
+  // 请求商品详情
+  async loadGoodDetail() {
+    const { data: res } = await wepy.get('/goods/detail', {
+      goods_id: this.GoodID
+    })
+
+    // 请求失败
+    if (res.meta.status !== 200) {
+      return wepy.myToast()
+    }
+
+    // 请求成功
+    this.GoodDetail = res.message
+    this.$apply()
+  }
+}
 </script>
+
+<style lang="less">
+.swiper-list {
+  height: 750rpx;
+  image {
+    width: 100%;
+  }
+}
+.goods-price {
+  .van-cell__title {
+    color: #ff0100;
+  }
+}
+</style>

@@ -68,7 +68,16 @@ export default class extends wepy.app {
       'van-sidebar': './assets/vant/sidebar/index',
       'van-sidebar-item': './assets/vant/sidebar-item/index',
       // 商品卡片
-      'van-card': './assets/vant/card/index'
+      'van-card': './assets/vant/card/index',
+      // 单元格
+      'van-cell': './assets/vant/cell/index',
+      'van-cell-group': './assets/vant/cell-group/index',
+      // 图标
+      'van-icon': './assets/vant/icon/index',
+      // 商品导航
+      'van-goods-action': './assets/vant/goods-action/index',
+      'van-goods-action-icon': './assets/vant/goods-action-icon/index',
+      'van-goods-action-button': './assets/vant/goods-action-button/index'
     }
   };
 
