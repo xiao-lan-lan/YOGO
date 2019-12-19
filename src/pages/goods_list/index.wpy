@@ -32,8 +32,8 @@
   
     }
 
-    onLoad() {
-  
+    onLoad(val) {
+      console.log(val)
     }
   }
 </script>

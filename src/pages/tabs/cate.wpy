@@ -19,7 +19,7 @@
 
         <!-- 三级分类 -->
         <view class="cat-level3">
-          <view wx:for="{{item.children}}" wx:key="index">
+          <view wx:for="{{item.children}}" wx:key="index" @tap="goList({{item.cat_id}})">
             <image
               src="{{item.cat_icon}}"
               mode="widthFix"
@@ -60,6 +60,13 @@ export default class Index extends wepy.page {
 
       // 重置滚动条位置,重新给0不起作用,负值还是从0开始
       this.scrollTop = this.scrollTop - 1
+    },
+
+    // 点击三级分类跳转列表页
+    goList(cateID) {
+      wepy.navigateTo({
+        url: `/pages/goods_list/index?cid=${cateID}`
+      })
     }
   };
 
