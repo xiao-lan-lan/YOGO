@@ -17,7 +17,8 @@
     mixins = []
 
     data = {
-  
+      GoodID: '', // 商品ID
+      GoodDetail: null// 商品详情
     }
 
     computed = {
@@ -32,8 +33,25 @@
   
     }
 
-    onLoad() {
-  
+    onLoad(val) {
+      this.GoodID = val.goods_id
+      this.loadGoodDetail()
+    }
+
+    // 请求商品详情
+    async loadGoodDetail() {
+      const {data: res} = await wepy.get('/goods/detail', {
+        goods_id: this.GoodID
+      })
+
+      // 请求失败
+      if (res.meta.status !== 200) {
+        return wepy.myToast()
+      }
+
+      // 请求成功
+      this.GoodDetail = res.message
+      this.$apply()
     }
   }
 </script>

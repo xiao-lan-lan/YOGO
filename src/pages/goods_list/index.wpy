@@ -6,6 +6,7 @@
       price="{{item.goods_price}}"
       title="{{item.goods_name}}"
       thumb="{{ item.goods_small_logo }}"
+      @tap="goDetail({{item.goods_id}})"
     />
     </block>
   </view>
@@ -40,7 +41,14 @@ export default class Index extends wepy.page {
 
   computed = {};
 
-  methods = {};
+  methods = {
+    // 跳转商品详情页
+    goDetail(goodID) {
+      wepy.navigateTo({
+        url: `/pages/goods_detail/index?goods_id=${goodID}`
+      })
+    }
+  };
 
   events = {};
 
