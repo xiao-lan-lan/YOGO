@@ -17,7 +17,10 @@ import wepy from 'wepy'
 export default class Index extends wepy.page {
   config = {
     'navigationBarTitleText': '商品列表',
-    'onReachBottomDistance': 100
+    'onReachBottomDistance': 100,
+    'enablePullDownRefresh': true,
+    'backgroundColor': '#ccc',
+    'backgroundTextStyle': 'dark'
   };
   components = {};
 
@@ -49,7 +52,7 @@ export default class Index extends wepy.page {
   }
 
   // 请求商品列表
-  async loadGoodsList() {
+  async loadGoodsList(cb) {
     // 解构 data
     const { data: res } = await wepy.get('/goods/search', this.GoodsListParams)
 
@@ -63,8 +66,13 @@ export default class Index extends wepy.page {
     // 请求成功
     this.GoodsList = [...this.GoodsList, ...res.message.goods]
     this.totalGoods = res.message.total
+
     // 请求完成，结束加载状态
     this.isloading = false
+
+    // 下拉刷新的停止刷新状态
+    cb && cb()
+
     this.$apply()
   }
 
@@ -85,6 +93,16 @@ export default class Index extends wepy.page {
 
     this.GoodsListParams.pagenum += 1
     this.loadGoodsList()
+  }
+
+  // 下拉刷新
+  onPullDownRefresh() {
+    // 页码归1,列表数组清空,重新请求第一页数据
+    this.GoodsListParams.pagenum = 1
+    this.GoodsList = []
+    this.loadGoodsList(() => {
+      wepy.stopPullDownRefresh()
+    })
   }
 }
 </script>
