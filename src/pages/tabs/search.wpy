@@ -1,6 +1,5 @@
 <template>
   <view class="container">
-
     <!-- 搜索框 -->
     <van-search
       value="{{ SearchText }}"
@@ -10,6 +9,16 @@
       @cancel="onCancel"
     >
     </van-search>
+
+    <!-- 搜索结果 -->
+    <van-cell-group>
+      <block wx:for="{{SearchList}}" wx:key="index">
+        <van-cell
+          title="{{item.goods_name}}"
+          @tap="goDetail({{item.goods_id}})"
+        ></van-cell>
+      </block>
+    </van-cell-group>
   </view>
 </template>
 
@@ -48,7 +57,14 @@ export default class Index extends wepy.page {
     },
 
     // 取消
-    onCancel() {}
+    onCancel() {},
+
+    // 点击搜索结果跳转详情
+    goDetail(goodID) {
+      wepy.navigateTo({
+        url: `/pages/goods_detail/index?goods_id=${goodID}`
+      })
+    }
   };
 
   events = {};

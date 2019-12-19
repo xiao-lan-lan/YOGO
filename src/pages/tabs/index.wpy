@@ -93,7 +93,13 @@ export default class Index extends wepy.page {
 
   events = {};
 
-  onLoad() {}
+  onLoad() {};
+
+  onShareAppMessage () {
+    return {
+      title: 'YOGO优购'
+    }
+  }
 }
 </script>
 
