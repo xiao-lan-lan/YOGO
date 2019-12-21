@@ -10,7 +10,7 @@ wepy.myToast = function (title, icon = 'none') {
 
 // 封装wepy的get请求
 
-const baesURL = 'https://uinav.com/api/public/v1'
+const baesURL = 'https://ugo.botue.com/api/public/v1'
 
 wepy.get = function (url, data = {}) {
   return wepy.request({
