@@ -42,7 +42,7 @@
 
       <!-- 规格参数 -->
       <van-tab title="规格参数">
-        <view wx:for="{{GoodDetail.attrs}}" class="goods-attr">
+        <view wx:for="{{GoodDetail.attrs}}" wx:key="attr_id" class="goods-attr">
           <text class="attr-name">{{item.attr_name}}</text>
           <text class="attr-val">{{item.attr_vals}}</text>
         </view>
@@ -111,6 +111,7 @@ export default class Index extends wepy.page {
     }
 
     // 请求成功
+    res.message.goods_introduce = res.message.goods_introduce.replace(/webp/g, 'jpg')
     this.GoodDetail = res.message
     this.$apply()
   }
