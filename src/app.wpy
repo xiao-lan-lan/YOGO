@@ -79,7 +79,13 @@ export default class extends wepy.app {
       'van-goods-action-icon': './assets/vant/goods-action-icon/index',
       'van-goods-action-button': './assets/vant/goods-action-button/index',
       // 搜索
-      'van-search': './assets/vant/search/index'
+      'van-search': './assets/vant/search/index',
+      // Tab 标签页
+      'van-tab': './assets/vant/tab/index',
+      'van-tabs': './assets/vant/tabs/index',
+      // 宫格
+      'van-grid': './assets/vant/grid/index',
+      'van-grid-item': './assets/vant/grid-item/index'
     }
   };
 

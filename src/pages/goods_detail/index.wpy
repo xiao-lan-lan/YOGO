@@ -3,7 +3,11 @@
     <!-- 轮播图 -->
     <swiper indicator-dots autoplay circular class="swiper-list">
       <swiper-item wx:for="{{GoodDetail.pics}}" wx:key="index">
-        <image src="{{item.pics_big_url}}" mode="widthFix" @tap="onPreview({{item.pics_big_url}})"></image>
+        <image
+          src="{{item.pics_big_url}}"
+          mode="widthFix"
+          @tap="onPreview({{item.pics_big_url}})"
+        ></image>
       </swiper-item>
     </swiper>
 
@@ -28,8 +32,23 @@
       </van-cell>
     </van-cell-group>
 
-    <!-- 商品图文 -->
-    <rich-text nodes="{{GoodDetail.goods_introduce}}"></rich-text>
+    <!-- tab栏切换 -->
+    <van-tabs>
+
+      <!-- 商品图文 -->
+      <van-tab title="图文详情">
+        <rich-text nodes="{{GoodDetail.goods_introduce}}"></rich-text>
+      </van-tab>
+
+      <!-- 规格参数 -->
+      <van-tab title="规格参数">
+        <view wx:for="{{GoodDetail.attrs}}" class="goods-attr">
+          <text class="attr-name">{{item.attr_name}}</text>
+          <text class="attr-val">{{item.attr_vals}}</text>
+        </view>
+      </van-tab>
+      
+    </van-tabs>
 
     <!-- 加入购物车 -->
     <van-goods-action>
@@ -108,6 +127,23 @@ export default class Index extends wepy.page {
 .goods-price {
   .van-cell__title {
     color: #ff0100;
+  }
+}
+.container {
+  padding-bottom: 100rpx;
+}
+.goods-attr {
+  display: flex;
+  line-height: 70rpx;
+  font-size: 24rpx;
+  text {
+    text-align: center;
+    width: 50%;
+    border-bottom: 1rpx solid #eee;
+  }
+  .attr-name {
+    border-right: 1rpx solid #eee;
+    border-bottom: 1rpx solid #eee;
   }
 }
 </style>
