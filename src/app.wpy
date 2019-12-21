@@ -89,7 +89,33 @@ export default class extends wepy.app {
     }
   };
 
-  globalData = {};
+  globalData = {
+    address: null // 用户地址
+  };
+
+  // 设置地址
+  setAddress(val) {
+    // console.log(val)
+    this.globalData.address = val
+    // 存到本地
+    wepy.setStorage({
+      key: 'address',
+      data: val
+    })
+  }
+
+  // 获取本地地址
+  async getAddress() {
+    const res = await wepy.getStorage({
+      key: 'address'
+    }).catch(err => err)
+
+    if (res.errMsg === 'getStorage:ok') {
+      this.globalData.address = res.data
+      console.log('get launch')
+      // console.log(this.globalData.address)
+    }
+  }
 
   constructor() {
     super()
@@ -132,6 +158,12 @@ export default class extends wepy.app {
     })
   }
 
-  onLaunch() {}
+  onLaunch() {
+    this.getAddress()
+    console.log('on langch')
+
+    // this.globalData.address = { name: 12, age: 99 }
+    // console.log('111', this.globalData.address)
+  }
 }
 </script>

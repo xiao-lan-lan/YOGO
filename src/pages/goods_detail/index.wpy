@@ -32,9 +32,16 @@
       </van-cell>
     </van-cell-group>
 
+    <!-- 收货地址 -->
+    <van-cell is-link class="address" @tap="onGetAddress">
+      <view slot="title">
+        <view class="van-cell-text">送至</view>
+        <view class="van-cell-text">{{ address }}</view>
+      </view>
+    </van-cell>
+
     <!-- tab栏切换 -->
     <van-tabs>
-
       <!-- 商品图文 -->
       <van-tab title="图文详情">
         <rich-text nodes="{{GoodDetail.goods_introduce}}"></rich-text>
@@ -43,11 +50,10 @@
       <!-- 规格参数 -->
       <van-tab title="规格参数">
         <view wx:for="{{GoodDetail.attrs}}" wx:key="attr_id" class="goods-attr">
-          <text class="attr-name">{{item.attr_name}}</text>
-          <text class="attr-val">{{item.attr_vals}}</text>
+          <text class="attr-name">{{ item.attr_name }}</text>
+          <text class="attr-val">{{ item.attr_vals }}</text>
         </view>
       </van-tab>
-      
     </van-tabs>
 
     <!-- 加入购物车 -->
@@ -74,7 +80,27 @@ export default class Index extends wepy.page {
     GoodDetail: null // 商品详情
   };
 
-  computed = {};
+  computed = {
+
+    // 从全局获取地址,渲染
+    address() {
+      console.log('compute')
+      // const {provinceName, cityName, countyName, detailInfo} = this.$parent.globalData.address
+      // return provinceName + cityName + countyName + detailInfo
+      const addObj = this.$parent.globalData.address
+      // console.log('---------', addObj)
+      if (addObj) {
+        return (
+          addObj.provinceName +
+          addObj.cityName +
+          addObj.countyName +
+          addObj.detailInfo
+        )
+      } else {
+        return '请选择收货地址'
+      }
+    }
+  };
 
   methods = {
     // 预览图片
@@ -89,14 +115,32 @@ export default class Index extends wepy.page {
           return item.pics_big_url
         }) // 需要预览的图片http链接列表
       })
+    },
+
+    // 选择收货地址
+    async onGetAddress() {
+      // 取消授权后,不会再次弹出,需要调此方法,再次授权
+      // wepy.openSetting()
+
+      const res = await wepy.chooseAddress().catch(err => err)
+      console.log(res, this)
+
+      if (res.errMsg === 'chooseAddress:ok') {
+        // 将地址数据提交到全局
+        this.$parent.setAddress(res)
+      }
     }
   };
 
   events = {};
 
   onLoad(val) {
+    console.log('page load')
     this.GoodID = val.goods_id
     this.loadGoodDetail()
+  }
+  onShow() {
+    console.log('page show')
   }
 
   // 请求商品详情
@@ -111,7 +155,10 @@ export default class Index extends wepy.page {
     }
 
     // 请求成功
-    res.message.goods_introduce = res.message.goods_introduce.replace(/webp/g, 'jpg')
+    res.message.goods_introduce = res.message.goods_introduce.replace(
+      /webp/g,
+      'jpg'
+    )
     this.GoodDetail = res.message
     this.$apply()
   }
@@ -146,5 +193,12 @@ export default class Index extends wepy.page {
     border-right: 1rpx solid #eee;
     border-bottom: 1rpx solid #eee;
   }
+}
+.address .van-cell {
+  border-top: 16rpx solid #ddd;
+  border-bottom: 16rpx solid #ddd;
+}
+.van-goods-action {
+  z-index: 99999;
 }
 </style>
