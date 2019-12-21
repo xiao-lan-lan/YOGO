@@ -3,7 +3,7 @@
     <!-- 轮播图 -->
     <swiper indicator-dots autoplay circular class="swiper-list">
       <swiper-item wx:for="{{GoodDetail.pics}}" wx:key="index">
-        <image src="{{item.pics_big_url}}" mode="widthFix"></image>
+        <image src="{{item.pics_big_url}}" mode="widthFix" @tap="onPreview({{item.pics_big_url}})"></image>
       </swiper-item>
     </swiper>
 
@@ -57,7 +57,21 @@ export default class Index extends wepy.page {
 
   computed = {};
 
-  methods = {};
+  methods = {
+    // 预览图片
+    onPreview(currentUrl) {
+      // const arr = this.GoodDetail.pics.filter(item => {
+      //   return item.pics_big_url
+      // })
+      // console.log(arr)
+      wepy.previewImage({
+        current: currentUrl, // 当前显示图片的http链接
+        urls: this.GoodDetail.pics.map(item => {
+          return item.pics_big_url
+        }) // 需要预览的图片http链接列表
+      })
+    }
+  };
 
   events = {};
 
