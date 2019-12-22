@@ -140,6 +140,12 @@ export default class extends wepy.app {
     }
   }
 
+  // 清空历史记录
+  clearHistory() {
+    this.globalData.historyList = []
+    this.savaStorage('history', this.globalData.historyList)
+  }
+
   // 本地存储封装
   savaStorage(key, data) {
     wepy.setStorage({

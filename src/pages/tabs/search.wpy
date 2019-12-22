@@ -24,10 +24,14 @@
 
     <!-- 历史记录 -->
     <view class="history" wx:else>
+      <van-cell title="历史记录" border="{{ false }}">
+        <van-icon slot="right-icon" name="delete" class="custom-icon" @tap="onDelHistory"/>
+      </van-cell>
       <van-tag type="success" wx:for="{{history}}" wx:key="index" @tap="goList({{item}})">
         {{ item }}
       </van-tag>
     </view>
+    
   </view>
 </template>
 
@@ -108,6 +112,11 @@ export default class Index extends wepy.page {
       wepy.navigateTo({
         url: `/pages/goods_list/index?query=${val}`
       })
+    },
+
+    // 删除历史记录
+    onDelHistory() {
+      this.$parent.clearHistory()
     }
   };
 
