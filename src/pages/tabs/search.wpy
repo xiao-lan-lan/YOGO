@@ -20,6 +20,11 @@
         ></van-cell>
       </block>
     </van-cell-group>
+
+    <!-- 历史记录 -->
+    <view class="history">
+      <van-tag type="success" wx:for="{{history}}" wx:key="index">{{item}}</van-tag>
+    </view>
   </view>
 </template>
 
@@ -35,21 +40,30 @@ export default class Index extends wepy.page {
   data = {
     SearchText: '', // 搜索关键字
     SearchList: [], // 搜索结果列表
-    timer: 0// 定时器
+    timer: 0 // 定时器
   };
 
-  computed = {};
+  computed = {
+
+    history() {
+      return this.$parent.globalData.historyList
+    }
+  };
 
   methods = {
-    // 搜索关键字
+    // 搜索关键字,跳转列表页
     onSearch(e) {
-       // 非空
+      // 非空
       if (!e.detail.trim()) {
         return
       }
 
       this.SearchText = e.detail.trim()
 
+      // 调用全局addHistory,增加历史记录存到全局
+      this.$parent.addHistory(this.SearchText)
+
+      // 跳转列表页
       wepy.navigateTo({
         url: `/pages/goods_list/index?query=${this.SearchText}`
       })
@@ -82,7 +96,6 @@ export default class Index extends wepy.page {
         url: `/pages/goods_detail/index?goods_id=${goodID}`
       })
     }
-
   };
 
   events = {};
@@ -91,20 +104,29 @@ export default class Index extends wepy.page {
     console.log(this)
   }
 
-   // 获取搜索结果
+  // 获取搜索结果
   async getSuggestion() {
     const { data: res } = await wepy.get('/goods/qsearch', {
       query: this.SearchText
     })
 
-      // 请求失败
+    // 请求失败
     if (res.meta.status !== 200) {
       return wepy.myToast()
     }
 
-      // 请求成功
+    // 请求成功
     this.SearchList = res.message
     this.$apply()
   }
 }
 </script>
+
+<style lang="less">
+.history {
+  padding: 20rpx;
+  .van-tag {
+    margin: 0 20rpx;
+  }
+}
+</style>

@@ -85,12 +85,15 @@ export default class extends wepy.app {
       'van-tabs': './assets/vant/tabs/index',
       // 宫格
       'van-grid': './assets/vant/grid/index',
-      'van-grid-item': './assets/vant/grid-item/index'
+      'van-grid-item': './assets/vant/grid-item/index',
+      // tag标记
+      'van-tag': './assets/vant/tag/index'
     }
   };
 
   globalData = {
-    address: null // 用户地址
+    address: null, // 用户地址
+    historyList: []// 历史记录
   };
 
   // 设置地址
@@ -98,10 +101,7 @@ export default class extends wepy.app {
     // console.log(val)
     this.globalData.address = val
     // 存到本地
-    wepy.setStorage({
-      key: 'address',
-      data: val
-    })
+    this.savaStorage('address', val)
   }
 
   // 获取本地地址
@@ -115,6 +115,37 @@ export default class extends wepy.app {
       console.log('get launch')
       // console.log(this.globalData.address)
     }
+  }
+
+  // 设置历史记录
+  addHistory(history) {
+    // 从前追加历史记录,不能直接追加,需要数组去重,留最新的
+    this.globalData.historyList.unshift(history)
+    this.globalData.historyList = [...new Set(this.globalData.historyList)]
+
+    // 本地存储
+    this.savaStorage('history', this.globalData.historyList)
+  }
+
+  // 获取历史记录
+  async getHistory() {
+    const res = await wepy.getStorage({
+      key: 'history'
+    }).catch(err => err)
+
+    if (res.errMsg === 'getStorage:ok') {
+      this.globalData.historyList = res.data
+      console.log('get launch')
+      console.log(this.globalData.historyList)
+    }
+  }
+
+  // 本地存储封装
+  savaStorage(key, data) {
+    wepy.setStorage({
+      key,
+      data
+    })
   }
 
   constructor() {
@@ -160,6 +191,7 @@ export default class extends wepy.app {
 
   onLaunch() {
     this.getAddress()
+    this.getHistory()
     console.log('on langch')
 
     // this.globalData.address = { name: 12, age: 99 }
