@@ -87,7 +87,13 @@ export default class extends wepy.app {
       'van-grid': './assets/vant/grid/index',
       'van-grid-item': './assets/vant/grid-item/index',
       // tag标记
-      'van-tag': './assets/vant/tag/index'
+      'van-tag': './assets/vant/tag/index',
+      // 步进器
+      'van-stepper': './assets/vant/stepper/index',
+      // 复选框
+      'van-checkbox': './assets/vant/checkbox/index',
+      // 提交订单
+      'van-submit-bar': './assets/vant/submit-bar/index'
     }
   };
 

@@ -1,42 +1,86 @@
 <template>
   <view class="container">
-    购物车
+    <!-- 标题 -->
+    <van-cell icon="shop-o" title="购物车列表"></van-cell>
+
+    <!-- 购物车列表 -->
+    <block>
+      <!-- 商品标题 -->
+      <van-card title="商品标题">
+        <!-- 自定义图片区 -->
+        <view slot="thumb" class="good-thumb">
+          <!-- 复选框 -->
+          <van-checkbox value="{{ true }}" checked-color="#d81e06" />
+          <!-- 图片 -->
+          <image src=""></image>
+        </view>
+        <!-- 自定义底部 -->
+        <view slot="bottom" class="good-bottom">
+          <!-- 价格 -->
+          <text>￥ 10.00</text>
+          <!-- 步进器 -->
+          <van-stepper value="{{ 1 }}" bind:change="onChange" />
+        </view>
+      </van-card>
+    </block>
+
+    <!-- 提交订单 -->
+    <van-submit-bar
+      price="{{ 3050 }}"
+      button-text="提交订单"
+      bind:submit="onClickButton"
+    >
+      <!-- 复选框 -->
+      <van-checkbox value="{{ true }}" checked-color="#d81e06">
+        全选
+      </van-checkbox>
+    </van-submit-bar>
   </view>
 </template>
 
 <script>
-  import wepy from 'wepy'
+import wepy from 'wepy'
 
-  export default class Index extends wepy.page {
-    config = {
-  
-    }
-    components = {
-    }
+export default class extends wepy.page {
+  config = {};
+  components = {};
 
-    mixins = []
+  mixins = [];
 
-    data = {
-  
-    }
+  data = {};
 
-    computed = {
-      carGoods() {
-        console.log(this.$parent.globalData.carGoods)
-        return this.$parent.globalData.carGoods
-      }
+  computed = {
+    carGoods() {
+      return this.$parent.globalData.carGoods
     }
+  };
 
-    methods = {
-  
-    }
+  methods = {};
 
-    events = {
-  
-    }
+  events = {};
 
-    onLoad() {
-  
-    }
-  }
+  onLoad() {}
+}
 </script>
+
+<style lang="less">
+.good-thumb {
+  display: flex;
+  align-items: center;
+  image {
+    height: 74px;
+  }
+}
+.good-bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10rpx;
+  text {
+    color: #d81e06;
+    font-weight: 700;
+  }
+}
+.van-submit-bar {
+  padding: 0 8px;
+}
+</style>
