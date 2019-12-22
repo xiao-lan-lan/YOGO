@@ -6,6 +6,7 @@
       placeholder="请输入搜索关键词"
       show-action
       @search="onSearch"
+      @change="onChange"
       @cancel="onCancel"
     >
     </van-search>
@@ -33,27 +34,43 @@ export default class Index extends wepy.page {
 
   data = {
     SearchText: '', // 搜索关键字
-    SearchList: [] // 搜索结果列表
+    SearchList: [], // 搜索结果列表
+    timer: 0// 定时器
   };
 
   computed = {};
 
   methods = {
     // 搜索关键字
-    async onSearch(e) {
-      this.SearchText = e.detail
-      const { data: res } = await wepy.get('/goods/qsearch', {
-        query: this.SearchText
-      })
-
-      // 请求失败
-      if (res.meta.status !== 200) {
-        return wepy.myToast()
+    onSearch(e) {
+       // 非空
+      if (!e.detail.trim()) {
+        return
       }
 
-      // 请求成功
-      this.SearchList = res.message
-      this.$apply()
+      this.SearchText = e.detail.trim()
+
+      wepy.navigateTo({
+        url: `/pages/goods_list/index?query=${this.SearchText}`
+      })
+    },
+
+    // 输入时联想建议
+    onChange(e) {
+      // 输入变化时,先清除原来的定时器,即原来如果有延迟要执行的请求,要清掉,只执行最后一次
+      clearTimeout(this.timer)
+
+      // 非空
+      if (!e.detail.trim()) {
+        return
+      }
+
+      this.SearchText = e.detail.trim()
+
+      // 定时器防抖,输入有变化时,延迟500ms再请求
+      this.timer = setTimeout(() => {
+        this.getSuggestion()
+      }, 500)
     },
 
     // 取消
@@ -65,10 +82,29 @@ export default class Index extends wepy.page {
         url: `/pages/goods_detail/index?goods_id=${goodID}`
       })
     }
+
   };
 
   events = {};
 
-  onLoad() {}
+  onLoad() {
+    console.log(this)
+  }
+
+   // 获取搜索结果
+  async getSuggestion() {
+    const { data: res } = await wepy.get('/goods/qsearch', {
+      query: this.SearchText
+    })
+
+      // 请求失败
+    if (res.meta.status !== 200) {
+      return wepy.myToast()
+    }
+
+      // 请求成功
+    this.SearchList = res.message
+    this.$apply()
+  }
 }
 </script>
