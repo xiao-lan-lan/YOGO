@@ -12,7 +12,7 @@
     </van-search>
 
     <!-- 搜索结果 -->
-    <van-cell-group>
+    <van-cell-group wx:if="{{SearchText.length}}">
       <block wx:for="{{SearchList}}" wx:key="index">
         <van-cell
           title="{{item.goods_name}}"
@@ -23,7 +23,7 @@
     </van-cell-group>
 
     <!-- 历史记录 -->
-    <view class="history">
+    <view class="history" wx:else>
       <van-tag type="success" wx:for="{{history}}" wx:key="index">
         {{ item }}
       </van-tag>
@@ -79,6 +79,7 @@ export default class Index extends wepy.page {
       // 非空
       if (!e.detail.trim()) {
         // 如果没有搜索词,清空上次搜索结果
+        this.SearchText = ''
         this.SearchList = []
         return
       }
@@ -108,8 +109,8 @@ export default class Index extends wepy.page {
     console.log(this)
   }
 
-  // 页面切换,切换回来还会显示上次的搜索结果,所以页面隐藏时清空一下
   onHide() {
+  // 页面切换,切换回来还会显示上次的搜索结果,所以页面隐藏时清空一下
     this.SearchText = ''
     this.SearchList = []
   }
