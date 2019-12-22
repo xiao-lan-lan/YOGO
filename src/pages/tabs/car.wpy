@@ -4,25 +4,30 @@
     <van-cell icon="shop-o" title="购物车列表"></van-cell>
 
     <!-- 购物车列表 -->
-    <block>
-      <!-- 商品标题 -->
-      <van-card title="商品标题">
-        <!-- 自定义图片区 -->
-        <view slot="thumb" class="good-thumb">
-          <!-- 复选框 -->
-          <van-checkbox value="{{ true }}" checked-color="#d81e06" />
-          <!-- 图片 -->
-          <image src=""></image>
-        </view>
-        <!-- 自定义底部 -->
-        <view slot="bottom" class="good-bottom">
-          <!-- 价格 -->
-          <text>￥ 10.00</text>
-          <!-- 步进器 -->
-          <van-stepper value="{{ 1 }}" bind:change="onChange" />
-        </view>
-      </van-card>
-    </block>
+    <view class="good-list">
+      <block wx:for="{{carGoods}}" wx:key="id">
+        <!-- 商品标题 -->
+        <van-card title="{{ item.title }}">
+          <!-- 自定义图片区 -->
+          <view slot="thumb" class="good-thumb">
+            <!-- 复选框 -->
+            <van-checkbox
+              value="{{ item.isChecked }}"
+              checked-color="#d81e06"
+            />
+            <!-- 图片 -->
+            <image src="{{ item.img }}"></image>
+          </view>
+          <!-- 自定义底部 -->
+          <view slot="bottom" class="good-bottom">
+            <!-- 价格 -->
+            <text>￥ {{ item.price }}</text>
+            <!-- 步进器 -->
+            <van-stepper value="{{ item.count }}" bind:change="onChange" />
+          </view>
+        </van-card>
+      </block>
+    </view>
 
     <!-- 提交订单 -->
     <van-submit-bar
@@ -51,6 +56,8 @@ export default class extends wepy.page {
 
   computed = {
     carGoods() {
+      console.log(this.$parent.globalData.carGoods)
+
       return this.$parent.globalData.carGoods
     }
   };
@@ -59,7 +66,13 @@ export default class extends wepy.page {
 
   events = {};
 
-  onLoad() {}
+  onLoad() {
+    console.log('load')
+  }
+
+  onShow() {
+    console.log('show')
+  }
 }
 </script>
 
@@ -68,7 +81,8 @@ export default class extends wepy.page {
   display: flex;
   align-items: center;
   image {
-    height: 74px;
+    height: 68px;
+    margin-left: 16rpx;
   }
 }
 .good-bottom {
@@ -82,5 +96,8 @@ export default class extends wepy.page {
 }
 .van-submit-bar {
   padding: 0 8px;
+}
+.container {
+  padding-bottom: 100rpx;
 }
 </style>

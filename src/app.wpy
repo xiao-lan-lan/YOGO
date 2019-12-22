@@ -184,13 +184,19 @@ export default class extends wepy.app {
   }
 
   // 获取购物车商品
-  async getCar() {
-    const res = await wepy.getStorage({
-      key: 'car'
-    }).catch(err => err)
+  getCar() {
+  //   const res = await wepy.getStorageSync('car')
 
-    if (res.errMsg === 'getStorage:ok') {
-      this.globalData.carGoods = res.data
+  //   if (res.length) {
+  //     this.globalData.carGoods = res
+  //   }
+    try {
+      var value = wx.getStorageSync('car')
+      if (value) {
+        this.globalData.carGoods = value
+      }
+    } catch (e) {
+      console.log(e)
     }
   }
 
