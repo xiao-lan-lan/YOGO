@@ -25,13 +25,23 @@
     <!-- 历史记录 -->
     <view class="history" wx:else>
       <van-cell title="历史记录" border="{{ false }}">
-        <van-icon slot="right-icon" name="delete" class="custom-icon" @tap="onDelHistory"/>
+        <van-icon
+          slot="right-icon"
+          name="delete"
+          class="custom-icon"
+          @tap="onDelHistory"
+        />
       </van-cell>
-      <van-tag type="success" wx:for="{{history}}" wx:key="index" @tap="goList({{item}})">
+      <van-tag
+        type="success"
+        wx:for="{{history}}"
+        wx:key="index"
+        @tap="goList({{item}})"
+        size="large"
+      >
         {{ item }}
       </van-tag>
     </view>
-    
   </view>
 </template>
 
@@ -104,6 +114,9 @@ export default class Index extends wepy.page {
       wepy.navigateTo({
         url: `/pages/goods_detail/index?goods_id=${goodID}`
       })
+
+      // 调用全局addHistory,增加历史记录存到全局
+      this.$parent.addHistory(this.SearchText)
     },
 
     // 点击历史记录,去列表页
@@ -127,7 +140,7 @@ export default class Index extends wepy.page {
   }
 
   onHide() {
-  // 页面切换,切换回来还会显示上次的搜索结果,所以页面隐藏时清空一下
+    // 页面切换,切换回来还会显示上次的搜索结果,所以页面隐藏时清空一下
     this.SearchText = ''
     this.SearchList = []
   }
