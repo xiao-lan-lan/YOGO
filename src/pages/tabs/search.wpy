@@ -17,13 +17,16 @@
         <van-cell
           title="{{item.goods_name}}"
           @tap="goDetail({{item.goods_id}})"
+          class="search"
         ></van-cell>
       </block>
     </van-cell-group>
 
     <!-- 历史记录 -->
     <view class="history">
-      <van-tag type="success" wx:for="{{history}}" wx:key="index">{{item}}</van-tag>
+      <van-tag type="success" wx:for="{{history}}" wx:key="index">
+        {{ item }}
+      </van-tag>
     </view>
   </view>
 </template>
@@ -44,7 +47,6 @@ export default class Index extends wepy.page {
   };
 
   computed = {
-
     history() {
       return this.$parent.globalData.historyList
     }
@@ -76,6 +78,8 @@ export default class Index extends wepy.page {
 
       // 非空
       if (!e.detail.trim()) {
+        // 如果没有搜索词,清空上次搜索结果
+        this.SearchList = []
         return
       }
 
@@ -104,6 +108,12 @@ export default class Index extends wepy.page {
     console.log(this)
   }
 
+  // 页面切换,切换回来还会显示上次的搜索结果,所以页面隐藏时清空一下
+  onHide() {
+    this.SearchText = ''
+    this.SearchList = []
+  }
+
   // 获取搜索结果
   async getSuggestion() {
     const { data: res } = await wepy.get('/goods/qsearch', {
@@ -127,6 +137,13 @@ export default class Index extends wepy.page {
   padding: 20rpx;
   .van-tag {
     margin: 0 20rpx;
+  }
+}
+.search {
+  .van-cell__title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }
 </style>
