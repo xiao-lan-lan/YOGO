@@ -93,7 +93,8 @@ export default class extends wepy.app {
 
   globalData = {
     address: null, // 用户地址
-    historyList: []// 历史记录
+    historyList: [], // 历史记录
+    carGoods: []// 购物车列表
   };
 
   // 设置地址
@@ -144,6 +145,35 @@ export default class extends wepy.app {
   clearHistory() {
     this.globalData.historyList = []
     this.savaStorage('history', this.globalData.historyList)
+  }
+
+  // 加入购物车
+  addToCar(val) {
+    // 传过来的商品详情结构太复杂,简化并添加数量和是否选中属性
+    const good = {
+      isChecked: true, // 是否选中
+      img: val.goods_small_logo, // 图片
+      title: val.goods_name, // 名称
+      price: val.goods_price, // 价格
+      count: 1, // 数量
+      id: val.goods_id// ID
+    }
+
+    // 不能直接push追加,如果是相同商品,只增加数量即可
+    // this.globalData.carGoods.push(good)
+
+    // 所以需要遍历判断是否包含此商品,如果不包含push,如果包含增加当前商品数量
+    const index = this.globalData.carGoods.findIndex(item => {
+      return item.id === val.goods_id
+    })
+    if (index === -1) {
+      this.globalData.carGoods.push(good)
+    } else {
+      this.globalData.carGoods[index].count++
+    }
+
+    // 存到本地
+    this.savaStorage('car', this.globalData.carGoods)
   }
 
   // 本地存储封装
