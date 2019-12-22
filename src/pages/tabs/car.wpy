@@ -21,7 +21,10 @@
     }
 
     computed = {
-  
+      carGoods() {
+        console.log(this.$parent.globalData.carGoods)
+        return this.$parent.globalData.carGoods
+      }
     }
 
     methods = {

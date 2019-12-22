@@ -62,6 +62,13 @@
 					"pathName": "pages/tabs/search",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/tabs/car",
+					"pathName": "pages/tabs/car",
+					"query": "",
+					"scene": null
 				}
 			]
 		}

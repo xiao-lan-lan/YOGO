@@ -113,9 +113,10 @@ export default class extends wepy.app {
 
     if (res.errMsg === 'getStorage:ok') {
       this.globalData.address = res.data
-      console.log('get launch')
+      // console.log('get launch')
       // console.log(this.globalData.address)
     }
+    // this.getStorage('address')
   }
 
   // 设置历史记录
@@ -137,7 +138,7 @@ export default class extends wepy.app {
     if (res.errMsg === 'getStorage:ok') {
       this.globalData.historyList = res.data
       console.log('get launch')
-      console.log(this.globalData.historyList)
+      // console.log(this.globalData.address)
     }
   }
 
@@ -174,6 +175,17 @@ export default class extends wepy.app {
 
     // 存到本地
     this.savaStorage('car', this.globalData.carGoods)
+  }
+
+  // 获取购物车商品
+  async getCar() {
+    const res = await wepy.getStorage({
+      key: 'car'
+    }).catch(err => err)
+
+    if (res.errMsg === 'getStorage:ok') {
+      this.globalData.carGoods = res.data
+    }
   }
 
   // 本地存储封装
@@ -228,10 +240,7 @@ export default class extends wepy.app {
   onLaunch() {
     this.getAddress()
     this.getHistory()
-    console.log('on langch')
-
-    // this.globalData.address = { name: 12, age: 99 }
-    // console.log('111', this.globalData.address)
+    this.getCar()
   }
 }
 </script>
