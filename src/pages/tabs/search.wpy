@@ -24,7 +24,7 @@
 
     <!-- 历史记录 -->
     <view class="history" wx:else>
-      <van-tag type="success" wx:for="{{history}}" wx:key="index">
+      <van-tag type="success" wx:for="{{history}}" wx:key="index" @tap="goList({{item}})">
         {{ item }}
       </van-tag>
     </view>
@@ -99,6 +99,14 @@ export default class Index extends wepy.page {
     goDetail(goodID) {
       wepy.navigateTo({
         url: `/pages/goods_detail/index?goods_id=${goodID}`
+      })
+    },
+
+    // 点击历史记录,去列表页
+    goList(val) {
+      // 跳转列表页
+      wepy.navigateTo({
+        url: `/pages/goods_list/index?query=${val}`
       })
     }
   };
