@@ -102,8 +102,7 @@ export default class extends wepy.app {
   globalData = {
     address: null, // 用户地址
     historyList: [], // 历史记录
-    carGoods: [], // 购物车列表
-    isCheckALL: false// 全选复选框
+    carGoods: [] // 购物车列表
   };
 
   // 设置地址
@@ -233,7 +232,6 @@ export default class extends wepy.app {
 
   // 全选
   checkAll(allstatus) {
-    this.globalData.isCheckALL = allstatus
     // 每一项复选框等于全选复选框的状态
     this.globalData.carGoods.forEach(item => {
       item.isChecked = allstatus
