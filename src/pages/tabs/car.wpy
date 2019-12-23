@@ -4,36 +4,39 @@
     <van-cell icon="shop-o" title="购物车列表"></van-cell>
 
     <!-- 购物车列表 -->
-    <view class="good-list">
+    <van-swipe-cell class="good-list">
       <block wx:for="{{carGoods}}" wx:key="id">
-        <!-- 商品标题 -->
-        <van-card title="{{ item.title }}">
-          <!-- 自定义图片区 -->
-          <view slot="thumb" class="good-thumb">
-            <!-- 复选框 -->
-            <van-checkbox
-              value="{{ item.isChecked }}"
-              checked-color="#d81e06"
-              @change="onCheckOne"
-              data-id="{{item.id}}"
-            />
-            <!-- 图片 -->
-            <image src="{{ item.img }}"></image>
-          </view>
-          <!-- 自定义底部 -->
-          <view slot="bottom" class="good-bottom">
-            <!-- 价格 -->
-            <text>￥ {{ item.price }}</text>
-            <!-- 步进器 -->
-            <van-stepper
-              value="{{ item.count }}"
-              @change="onChangeGoodCount"
-              data-id="{{item.id}}"
-            ></van-stepper>
-          </view>
-        </van-card>
+        <van-swipe-cell right-width="{{ 65 }}">
+          <!-- 商品标题 -->
+          <van-card title="{{ item.title }}">
+            <!-- 自定义图片区 -->
+            <view slot="thumb" class="good-thumb">
+              <!-- 复选框 -->
+              <van-checkbox
+                value="{{ item.isChecked }}"
+                checked-color="#d81e06"
+                @change="onCheckOne"
+                data-id="{{item.id}}"
+              />
+              <!-- 图片 -->
+              <image src="{{ item.img }}"></image>
+            </view>
+            <!-- 自定义底部 -->
+            <view slot="bottom" class="good-bottom">
+              <!-- 价格 -->
+              <text>￥ {{ item.price }}</text>
+              <!-- 步进器 -->
+              <van-stepper
+                value="{{ item.count }}"
+                @change="onChangeGoodCount"
+                data-id="{{item.id}}"
+              ></van-stepper>
+            </view>
+          </van-card>
+          <view slot="right" class="swipe-delete" @tap="onDeleteOne({{item.id}})">删除</view>
+        </van-swipe-cell>
       </block>
-    </view>
+    </van-swipe-cell>
 
     <!-- 提交订单 -->
     <van-submit-bar
@@ -75,6 +78,11 @@ export default class extends wepy.page {
     // 商品数量增减
     onChangeGoodCount(e) {
       this.$parent.uodataGoodsCount(e.detail, e.currentTarget.dataset.id)
+    },
+
+    // 删除商品
+    onDeleteOne(id) {
+      this.$parent.deleteOneGoods(id)
     }
   };
 
@@ -113,5 +121,15 @@ export default class extends wepy.page {
 }
 .container {
   padding-bottom: 100rpx;
+}
+.swipe-delete {
+  background-color: #ee0a24;
+  color: #fff;
+  width: 65px;
+  height: 100%;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

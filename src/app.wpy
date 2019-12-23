@@ -93,7 +93,9 @@ export default class extends wepy.app {
       // 复选框
       'van-checkbox': './assets/vant/checkbox/index',
       // 提交订单
-      'van-submit-bar': './assets/vant/submit-bar/index'
+      'van-submit-bar': './assets/vant/submit-bar/index',
+      // 滑动单元格
+      'van-swipe-cell': './assets/vant/swipe-cell/index'
     }
   };
 
@@ -217,6 +219,14 @@ export default class extends wepy.app {
     // 修改最新数量
     this.globalData.carGoods[index].count = newcount
     // 本地存储更新
+    this.savaStorage('car', this.globalData.carGoods)
+  }
+
+  // 删除商品
+  deleteOneGoods(id) {
+    // 筛选出不包含此项的新数组
+    this.globalData.carGoods = this.globalData.carGoods.filter(item => item.id !== id)
+    // 存到本地
     this.savaStorage('car', this.globalData.carGoods)
   }
 
