@@ -185,11 +185,11 @@ export default class extends wepy.app {
 
   // 获取购物车商品
   getCar() {
-  //   const res = await wepy.getStorageSync('car')
+    // const res = wepy.getStorageSync('car')
 
-  //   if (res.length) {
-  //     this.globalData.carGoods = res
-  //   }
+    // if (res.length) {
+    //   this.globalData.carGoods = res
+    // }
     try {
       var value = wx.getStorageSync('car')
       if (value) {
@@ -198,6 +198,16 @@ export default class extends wepy.app {
     } catch (e) {
       console.log(e)
     }
+  }
+
+  // 修改购物车商品选中状态
+  updataGoodsStatus(newstatus, id) {
+    // 找到此商品
+    const index = this.globalData.carGoods.findIndex(item => item.id === id)
+    // 去修改它的状态
+    this.globalData.carGoods[index].isChecked = newstatus
+    // 存到本地
+    this.savaStorage('car', this.globalData.carGoods)
   }
 
   // 本地存储封装

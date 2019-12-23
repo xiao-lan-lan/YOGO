@@ -14,6 +14,8 @@
             <van-checkbox
               value="{{ item.isChecked }}"
               checked-color="#d81e06"
+              @change="onCheckOne"
+              data-id="{{item.id}}"
             />
             <!-- 图片 -->
             <image src="{{ item.img }}"></image>
@@ -56,13 +58,17 @@ export default class extends wepy.page {
 
   computed = {
     carGoods() {
-      console.log(this.$parent.globalData.carGoods)
-
       return this.$parent.globalData.carGoods
     }
   };
 
-  methods = {};
+  methods = {
+
+    // 单个商品勾选状态
+    onCheckOne(e) {
+      this.$parent.updataGoodsStatus(e.detail, e.currentTarget.dataset.id)
+    }
+  };
 
   events = {};
 
