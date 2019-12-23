@@ -242,12 +242,12 @@ export default class extends wepy.app {
   }
 
   // 选中商品数量
-  checkedCount(allcount) {
+  async checkedCount(allcount) {
     this.globalData.allcount = allcount
-    wepy.setTabBarBadge({
+    await wepy.setTabBarBadge({
       index: 3,
       text: this.globalData.allcount.toString()
-    })
+    }).catch(err => err)
   }
 
   // 本地存储封装

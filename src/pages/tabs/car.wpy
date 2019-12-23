@@ -6,9 +6,9 @@
     <!-- 购物车列表 -->
     <van-swipe-cell class="good-list">
       <block wx:for="{{carGoods}}" wx:key="id">
-        <van-swipe-cell right-width="{{ 65 }}">
+        <van-swipe-cell right-width="{{ 65 }}" >
           <!-- 商品标题 -->
-          <van-card title="{{ item.title }}">
+          <van-card title="{{ item.title }}" @tap="goDetail({{item.id}})">
             <!-- 自定义图片区 -->
             <view slot="thumb" class="good-thumb">
               <!-- 复选框 -->
@@ -119,6 +119,13 @@ export default class extends wepy.page {
     // 全选
     onCheckAll(e) {
       this.$parent.checkAll(e.detail)
+    },
+
+    // 去详情页
+    goDetail(id) {
+      wepy.navigateTo({
+        url: `/pages/goods_detail/index?goods_id=${id}`
+      })
     }
 
   };
