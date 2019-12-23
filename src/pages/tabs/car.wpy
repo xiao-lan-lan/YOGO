@@ -40,7 +40,7 @@
 
     <!-- 提交订单 -->
     <van-submit-bar
-      price="{{ 3050 }}"
+      price="{{ checkedPrice }}"
       button-text="提交订单"
       bind:submit="onClickButton"
     >
@@ -75,7 +75,19 @@ export default class extends wepy.page {
       const allCount = this.$parent.globalData.carGoods.length
       const checkedCount = this.$parent.globalData.carGoods.filter(item => item.isChecked).length
       return allCount === checkedCount
+    },
+
+    // 选中商品总价
+    checkedPrice() {
+      // 筛选出选中商品数组,遍历 数量*价格 返回
+      let allprice = 0
+      const checkedGoods = this.$parent.globalData.carGoods.filter(item => item.isChecked)
+      checkedGoods.forEach(item => {
+        allprice += item.price * item.count
+      })
+      return allprice * 100
     }
+
   };
 
   methods = {
