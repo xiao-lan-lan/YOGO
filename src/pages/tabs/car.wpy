@@ -25,7 +25,11 @@
             <!-- 价格 -->
             <text>￥ {{ item.price }}</text>
             <!-- 步进器 -->
-            <van-stepper value="{{ item.count }}" bind:change="onChange" />
+            <van-stepper
+              value="{{ item.count }}"
+              @change="onChangeGoodCount"
+              data-id="{{item.id}}"
+            ></van-stepper>
           </view>
         </van-card>
       </block>
@@ -63,10 +67,14 @@ export default class extends wepy.page {
   };
 
   methods = {
-
     // 单个商品勾选状态
     onCheckOne(e) {
       this.$parent.updataGoodsStatus(e.detail, e.currentTarget.dataset.id)
+    },
+
+    // 商品数量增减
+    onChangeGoodCount(e) {
+      this.$parent.uodataGoodsCount(e.detail, e.currentTarget.dataset.id)
     }
   };
 

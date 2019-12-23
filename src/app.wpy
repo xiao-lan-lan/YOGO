@@ -210,6 +210,16 @@ export default class extends wepy.app {
     this.savaStorage('car', this.globalData.carGoods)
   }
 
+  // 修改购物车商品数量
+  uodataGoodsCount(newcount, id) {
+    // 找到这件商品
+    const index = this.globalData.carGoods.findIndex(item => item.id === id)
+    // 修改最新数量
+    this.globalData.carGoods[index].count = newcount
+    // 本地存储更新
+    this.savaStorage('car', this.globalData.carGoods)
+  }
+
   // 本地存储封装
   savaStorage(key, data) {
     wepy.setStorage({
