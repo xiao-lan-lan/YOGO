@@ -102,7 +102,8 @@ export default class extends wepy.app {
   globalData = {
     address: null, // 用户地址
     historyList: [], // 历史记录
-    carGoods: [] // 购物车列表
+    carGoods: [], // 购物车列表
+    allcount: 0// 选中商品数量
   };
 
   // 设置地址
@@ -238,6 +239,15 @@ export default class extends wepy.app {
     })
     // 本地存储
     this.savaStorage('car', this.globalData.carGoods)
+  }
+
+  // 选中商品数量
+  checkedCount(allcount) {
+    this.globalData.allcount = allcount
+    wepy.setTabBarBadge({
+      index: 3,
+      text: this.globalData.allcount.toString()
+    })
   }
 
   // 本地存储封装

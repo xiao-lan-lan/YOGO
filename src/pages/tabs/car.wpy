@@ -86,6 +86,16 @@ export default class extends wepy.page {
         allprice += item.price * item.count
       })
       return allprice * 100
+    },
+
+    // 选中商品数量
+    checkedCount() {
+      let allcount = 0
+      const checkedGoods = this.$parent.globalData.carGoods.filter(item => item.isChecked)
+      checkedGoods.forEach(item => {
+        allcount += item.count
+      })
+      this.$parent.checkedCount(allcount)
     }
 
   };
