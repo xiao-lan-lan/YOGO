@@ -45,7 +45,7 @@
       bind:submit="onClickButton"
     >
       <!-- 复选框 -->
-      <van-checkbox value="{{ true }}" checked-color="#d81e06">
+      <van-checkbox value="{{ true }}" checked-color="#d81e06" @change="onCheckAll">
         全选
       </van-checkbox>
     </van-submit-bar>
@@ -64,6 +64,7 @@ export default class extends wepy.page {
   data = {};
 
   computed = {
+    // 购物车商品
     carGoods() {
       return this.$parent.globalData.carGoods
     }
@@ -83,7 +84,13 @@ export default class extends wepy.page {
     // 删除商品
     onDeleteOne(id) {
       this.$parent.deleteOneGoods(id)
+    },
+
+    // 全选
+    onCheckAll(e) {
+      this.$parent.checkAll(e.detail)
     }
+
   };
 
   events = {};
