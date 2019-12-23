@@ -59,7 +59,7 @@
     <!-- 加入购物车 -->
     <van-goods-action>
       <van-goods-action-icon icon="chat-o" text="客服" dot open-type="contact"/>
-      <van-goods-action-icon icon="cart-o" text="购物车" info="5" link-type="switchTab" url="/pages/tabs/car"/>
+      <van-goods-action-icon icon="cart-o" text="购物车" info="{{carcount}}" link-type="switchTab" url="/pages/tabs/car"/>
       <van-goods-action-button text="加入购物车" type="warning" @click="onAddCar"/>
       <van-goods-action-button text="立即购买" />
     </van-goods-action>
@@ -99,6 +99,16 @@ export default class Index extends wepy.page {
       } else {
         return '请选择收货地址'
       }
+    },
+
+    // 购物车商品数量
+    carcount() {
+      let allcount = 0
+      const checkedGoods = this.$parent.globalData.carGoods.filter(item => item.isChecked)
+      checkedGoods.forEach(item => {
+        allcount += item.count
+      })
+      return allcount
     }
   };
 
