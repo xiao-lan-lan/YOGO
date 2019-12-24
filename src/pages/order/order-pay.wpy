@@ -1,0 +1,39 @@
+<template>
+  <view class="container">
+    下单
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Index extends wepy.page {
+    config = {
+      'navigationBarTitleText': '确认订单'
+    }
+    components = {
+    }
+
+    mixins = []
+
+    data = {
+  
+    }
+
+    computed = {
+  
+    }
+
+    methods = {
+  
+    }
+
+    events = {
+  
+    }
+
+    onLoad() {
+  
+    }
+  }
+</script>

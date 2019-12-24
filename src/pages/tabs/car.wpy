@@ -8,7 +8,8 @@
       <block wx:for="{{carGoods}}" wx:key="id">
         <van-swipe-cell right-width="{{ 65 }}" >
           <!-- 商品标题 -->
-          <van-card title="{{ item.title }}" @tap="goDetail({{item.id}})">
+          <!-- @tap="goDetail({{item.id}})" -->
+          <van-card title="{{ item.title }}" >
             <!-- 自定义图片区 -->
             <view slot="thumb" class="good-thumb">
               <!-- 复选框 -->
@@ -42,7 +43,7 @@
     <van-submit-bar
       price="{{ checkedPrice }}"
       button-text="提交订单"
-      bind:submit="onClickButton"
+      @submit="onSubmitOerder"
     >
       <!-- 复选框 -->
       <van-checkbox value="{{ checkAll }}" checked-color="#d81e06" @change="onCheckAll">
@@ -96,6 +97,7 @@ export default class extends wepy.page {
         allcount += item.count
       })
       this.$parent.checkedCount(allcount)
+      return allcount
     }
 
   };
@@ -125,6 +127,26 @@ export default class extends wepy.page {
     goDetail(id) {
       wepy.navigateTo({
         url: `/pages/goods_detail/index?goods_id=${id}`
+      })
+    },
+
+    // 提交订单
+    onSubmitOerder() {
+      // 1.合法校验
+      // 1-1.勾选数量不能为0
+      if (this.checkedCount <= 0) {
+        // this.能直接访问到计算属性的数据
+        return wepy.myToast('订单数量需大于0')
+      }
+
+      // 1-2.商品总价不能为0
+      if (this.checkedPrice <= 0) {
+        return wepy.myToast('商品金额需大于0')
+      }
+
+      // 2.通过校验，跳转下单支付页面
+      wepy.navigateTo({
+        url: '/pages/order/order-pay'
       })
     }
 
