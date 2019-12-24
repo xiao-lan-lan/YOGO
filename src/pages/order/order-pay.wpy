@@ -35,6 +35,17 @@
         />
       </block>
     </view>
+
+    <!-- 支付 -->
+    <!-- 未登录 -->
+    <van-button type="primary" size="large" style="position:fixed;bottom:0;width:100%">登录后下单</van-button>
+
+    <!-- 已登录 -->
+    <van-submit-bar
+      price="{{ 3050 }}"
+      button-text="支付"
+      bind:submit="onSubmit"
+    />
   </view>
 </template>
 
