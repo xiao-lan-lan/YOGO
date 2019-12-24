@@ -1,0 +1,39 @@
+<template>
+  <view class="container">
+    订单列表
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Index extends wepy.page {
+    config = {
+  
+    }
+    components = {
+    }
+
+    mixins = []
+
+    data = {
+  
+    }
+
+    computed = {
+  
+    }
+
+    methods = {
+  
+    }
+
+    events = {
+  
+    }
+
+    onLoad() {
+  
+    }
+  }
+</script>

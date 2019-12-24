@@ -13,8 +13,8 @@ export default class extends wepy.app {
       'pages/tabs/my',
       'pages/goods_detail/index',
       'pages/goods_list/index',
-      'pages/order/order-pay'
-
+      'pages/order/order-pay',
+      'pages/order/order-list'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -99,7 +99,9 @@ export default class extends wepy.app {
       // 滑动单元格
       'van-swipe-cell': './assets/vant/swipe-cell/index',
       // 按钮
-      'van-button': './assets/vant/button/index'
+      'van-button': './assets/vant/button/index',
+      // toast
+      'van-toast': './assets/vant/toast/index'
     }
   };
 

@@ -58,11 +58,16 @@
     >
       登录后下单
     </van-button>
+
+    <!-- 倒计时 -->
+    <van-toast id="custom-selector"></van-toast>
+
   </view>
 </template>
 
 <script>
 import wepy from 'wepy'
+import Toast from '../../assets/vant/toast/toast'
 
 export default class Index extends wepy.page {
   config = {
@@ -180,7 +185,35 @@ export default class Index extends wepy.page {
       if (res.errMsg !== 'requestPayment:fail no permission') {
         return wepy.myToast('支付失败')
       }
+      this.cutdown()
     }
+  };
+
+  // 倒计时
+  cutdown() {
+    const toast = Toast.loading({
+      duration: 0,       // 持续展示 toast
+      forbidClick: true, // 禁用背景点击
+      message: '倒计时 3 秒',
+      loadingType: 'spinner',
+      selector: '#custom-selector'
+    })
+
+    let second = 3
+    const timer = setInterval(() => {
+      second--
+      if (second) {
+        toast.setData({
+          message: `倒计时 ${second} 秒`
+        })
+      } else {
+        clearInterval(timer)
+        Toast.clear()
+        wepy.navigateTo({
+          url: '/pages/order/order-list'
+        })
+      }
+    }, 1000)
   };
 
   events = {};
