@@ -107,7 +107,8 @@ export default class extends wepy.app {
     address: null, // 用户地址
     historyList: [], // 历史记录
     carGoods: [], // 购物车列表
-    allcount: 0// 选中商品数量
+    allcount: 0, // 选中商品数量
+    token: ''
   };
 
   // 设置地址
@@ -254,6 +255,24 @@ export default class extends wepy.app {
     }).catch(err => err)
   }
 
+  // 设置token
+  setToken(val) {
+    this.globalData.token = val
+    this.savaStorage('token', this.globalData.token)
+  }
+
+  // 获取token
+  async getToken() {
+    try {
+      var value = wx.getStorageSync('token')
+      if (value) {
+        this.globalData.token = value
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   // 本地存储封装
   savaStorage(key, data) {
     wepy.setStorage({
@@ -271,7 +290,7 @@ export default class extends wepy.app {
     this.intercept('request', {
       // 发出请求时的回调函数
       config(p) {
-        console.log('config request: ', p)
+        // console.log('config request: ', p)
         wepy.showLoading({
           title: '数据加载中'
           // mask: true
@@ -283,27 +302,29 @@ export default class extends wepy.app {
       // 请求成功后的回调函数
       success(p) {
         // 可以在这里对收到的响应数据对象进行加工处理
-        console.log('request success: ', p)
+        // console.log('request success: ', p)
         // 必须返回响应数据对象，否则后续无法对响应数据进行处理
         return p
       },
 
       // 请求失败后的回调函数
       fail(p) {
-        console.log('request fail: ', p)
+        // console.log('request fail: ', p)
         // 必须返回响应数据对象，否则后续无法对响应数据进行处理
         return p
       },
 
       // 请求完成时的回调函数(请求成功或失败都会被执行)
       complete(p) {
-        console.log('request complete: ', p)
+        // console.log('request complete: ', p)
         wepy.hideLoading()
       }
     })
   }
 
   onLaunch() {
+    console.log(this.globalData.token)
+
     this.getAddress()
     this.getHistory()
     this.getCar()

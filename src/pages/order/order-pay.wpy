@@ -37,15 +37,27 @@
     </view>
 
     <!-- 支付 -->
-    <!-- 未登录 -->
-    <van-button type="primary" size="large" style="position:fixed;bottom:0;width:100%">登录后下单</van-button>
 
     <!-- 已登录 -->
     <van-submit-bar
       price="{{ 3050 }}"
       button-text="支付"
       bind:submit="onSubmit"
-    />
+      wx:if="{{token}}"
+    ></van-submit-bar>
+
+    <!-- 未登录 -->
+    <!-- getuserinfo事件代替click -->
+    <van-button
+      type="primary"
+      size="large"
+      style="position:fixed;bottom:0;width:100%"
+      wx:else
+      open-type="getUserInfo"
+      @getuserinfo="onLogin"
+    >
+      登录后下单
+    </van-button>
   </view>
 </template>
 
@@ -71,6 +83,11 @@ export default class Index extends wepy.page {
     // 选中商品
     checkedGoods() {
       return this.$parent.globalData.carGoods.filter(item => item.isChecked)
+    },
+
+    // token
+    token() {
+      return this.$parent.globalData.token
     }
   };
 
@@ -82,6 +99,42 @@ export default class Index extends wepy.page {
         wepy.myToast('选择地址失败')
       }
       this.$parent.setAddress(res)
+    },
+
+    // 登录
+    async onLogin(e) {
+      // 1.获取用户授权信息
+      if (e.detail.errMsg !== 'getUserInfo:ok') {
+        return wepy.myToast('获取用户授权失败')
+      }
+      // console.log(e.detail)
+
+      // 2.调用接口获取登录凭证（code）
+      const res = await wepy.login()
+      if (res.errMsg !== 'login:ok') {
+        return wepy.myToast('获取用户code失败')
+      }
+      // console.log(res)
+
+      // 3.准备登录请求参数
+      const loginParams = {
+        encryptedData: e.detail.encryptedData,
+        rawData: e.detail.rawData,
+        iv: e.detail.iv,
+        signature: e.detail.signature,
+        code: res.code
+      }
+
+      // 4.发请求,拿token,存到全局
+      // msg: "Error: invalid code, hints: [ req_id: zJLFFXyMe-z.Ckea ]"变化的
+      // status: 400  说明成功,后台接口有权限,非其开发者无法访问
+      const result = await wepy.post('/users/wxlogin', loginParams)
+      if (result.data.meta.status === 400) {
+        this.$parent.setToken(result.data.meta.msg)
+      }
+
+      // 5.异步刷新页面
+      this.$apply()
     }
   };
 
