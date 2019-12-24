@@ -8,21 +8,33 @@
         <text>收货人：{{ address.userName }}</text>
         <view>联系电话：{{ address.telNumber }}<van-icon name="arrow"/></view>
       </view>
-      <view
-        >收货地址：{{
+      <view>
+        收货地址：{{
           address.provinceName +
             address.cityName +
             address.countyName +
             address.detailInfo
-        }}</view
-      >
+        }}
+      </view>
     </view>
 
     <!-- 选择地址 -->
-    <van-button type="warning" size="large" wx:else @click="onChooseAddress">请选择收货地址</van-button>
+    <van-button wx:else type="warning" size="large" @click="onChooseAddress">请选择收货地址</van-button>
 
     <!-- 分割线 -->
     <image src="/assets/icons/cart_border@2x.png" class="line"></image>
+
+    <!-- 下单商品列表 -->
+    <view>
+      <block wx:for="{{checkedGoods}}" wx:key="id">
+        <van-card
+          num="{{item.count}}"
+          price="{{item.price}}"
+          title="{{item.title}}"
+          thumb="{{ item.img }}"
+        />
+      </block>
+    </view>
   </view>
 </template>
 
@@ -40,8 +52,14 @@ export default class Index extends wepy.page {
   data = {};
 
   computed = {
+    // 地址
     address() {
       return this.$parent.globalData.address
+    },
+
+    // 选中商品
+    checkedGoods() {
+      return this.$parent.globalData.carGoods.filter(item => item.isChecked)
     }
   };
 
@@ -76,5 +94,8 @@ export default class Index extends wepy.page {
 .line {
   width: 100%;
   height: 10rpx;
+}
+.van-card {
+  border-bottom: 1rpx solid #eee;
 }
 </style>
