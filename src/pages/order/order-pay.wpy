@@ -40,7 +40,7 @@
 
     <!-- 已登录 -->
     <van-submit-bar
-      price="{{ 3050 }}"
+      price="{{ allPrice }}"
       button-text="支付"
       bind:submit="onSubmit"
       wx:if="{{token}}"
@@ -88,6 +88,16 @@ export default class Index extends wepy.page {
     // token
     token() {
       return this.$parent.globalData.token
+    },
+
+    // 商品总价
+    allPrice() {
+      const checkedGoods = this.$parent.globalData.carGoods.filter(item => item.isChecked)
+      let price = 0
+      checkedGoods.forEach(item => {
+        price += item.count * item.price
+      })
+      return price * 100
     }
   };
 
