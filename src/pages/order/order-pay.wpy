@@ -1,66 +1,70 @@
 <template>
   <view class="container">
-    
     <!-- 地址 -->
 
-    <!-- 选择地址 -->
-    <van-button type="warning" size="large">请选择收货地址</van-button>
-
     <!-- 显示地址 -->
-    <view class="address">
+    <view class="address" wx:if="{{address.userName}}">
       <view class="phone">
-        <text>收货人：{{address.userName}}</text>
-        <view>联系电话：{{address.telNumber}}<van-icon name="arrow" /></view>
+        <text>收货人：{{ address.userName }}</text>
+        <view>联系电话：{{ address.telNumber }}<van-icon name="arrow"/></view>
       </view>
-      <view>收货地址：{{address.provinceName+address.cityName+address.countyName+address.detailInfo}}</view>
+      <view
+        >收货地址：{{
+          address.provinceName +
+            address.cityName +
+            address.countyName +
+            address.detailInfo
+        }}</view
+      >
     </view>
+
+    <!-- 选择地址 -->
+    <van-button type="warning" size="large" wx:else @click="onChooseAddress">请选择收货地址</van-button>
 
     <!-- 分割线 -->
     <image src="/assets/icons/cart_border@2x.png" class="line"></image>
-
   </view>
 </template>
 
 <script>
-  import wepy from 'wepy'
+import wepy from 'wepy'
 
-  export default class Index extends wepy.page {
-    config = {
-      'navigationBarTitleText': '确认订单'
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '确认订单'
+  };
+  components = {};
+
+  mixins = [];
+
+  data = {};
+
+  computed = {
+    address() {
+      return this.$parent.globalData.address
     }
-    components = {
-    }
+  };
 
-    mixins = []
-
-    data = {
-  
-    }
-
-    computed = {
-      address() {
-        console.log(this.$parent.globalData.address)
-  
-        return this.$parent.globalData.address
+  methods = {
+    // 选择地址
+    async onChooseAddress() {
+      const res = await wepy.chooseAddress().catch(err => err)
+      if (res.errMsg !== 'chooseAddress:ok') {
+        wepy.myToast('选择地址失败')
       }
+      this.$parent.setAddress(res)
     }
+  };
 
-    methods = {
-  
-    }
+  events = {};
 
-    events = {
-  
-    }
-
-    onLoad() {
-  
-    }
-  }
+  onLoad() {}
+}
 </script>
 
 <style lang="less">
 .address {
+  margin-top: 10rpx;
   padding: 0 20rpx;
   font-size: 24rpx;
   line-height: 60rpx;
