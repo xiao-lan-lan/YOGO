@@ -76,6 +76,13 @@
 					"pathName": "pages/order/order-pay",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/order/order-list",
+					"pathName": "pages/order/order-list",
+					"query": "",
+					"scene": null
 				}
 			]
 		}

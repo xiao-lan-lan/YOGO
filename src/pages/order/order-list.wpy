@@ -1,39 +1,103 @@
 <template>
   <view class="container">
-    订单列表
+    <!-- tab标签 -->
+    <van-tabs active="{{ active }}" @change="onTabChange">
+      <van-tab title="全部订单">
+        <!-- 订单列表 -->
+        <van-panel title="订单号 xxxxx" use-footer-slot>
+          <view>
+            <block wx:for="{{orderList}}" wx:key="index">
+              <van-card
+                num="{{item.count}}"
+                price="{{item.price}}"
+                title="{{item.title}}"
+                thumb="{{ item.img }}"
+              />
+            </block>
+          </view>
+          <view slot="footer" class="footer">
+            <text>商品数量 ：<text class="red-font">{{orderCount}} 件</text></text>
+            <text>订单总价 ：<text class="red-font">{{orderPrice}} 元</text></text>
+          </view>
+        </van-panel>
+      </van-tab>
+      <van-tab title="待付款">
+        <repeat for="{{orderList}}" key="index">
+          <order-item :item="item"></order-item>
+        </repeat>
+      </van-tab>
+      <van-tab title="待发货">待发货</van-tab>
+    </van-tabs>
   </view>
 </template>
 
 <script>
-  import wepy from 'wepy'
+import wepy from 'wepy'
+import OrderItem from '../../components/order'
 
-  export default class Index extends wepy.page {
-    config = {
-  
-    }
-    components = {
-    }
+export default class Index extends wepy.page {
+  config = {};
+  components = {
+    'order-item': OrderItem
+  };
 
-    mixins = []
+  mixins = [];
 
-    data = {
-  
-    }
+  data = {
+    active: 0
+  };
 
-    computed = {
-  
-    }
+  computed = {
+    // 订单列表
+    orderList() {
+      return this.$parent.globalData.carGoods
+    },
 
-    methods = {
-  
-    }
+    // 选中数组,模拟待付款
+    checkedList() {
+      return this.$parent.globalData.carGoods.filter(item => item.isChecked)
+    },
 
-    events = {
-  
-    }
+    // 商品数量
+    orderCount() {
+      let count = 0
+      this.$parent.globalData.carGoods.forEach(item => {
+        count += item.count
+      })
+      return count
+    },
 
-    onLoad() {
-  
+    // 订单总价
+    orderPrice() {
+      let price = 0
+      this.$parent.globalData.carGoods.forEach(item => {
+        price += item.count * item.price
+      })
+      return price
     }
-  }
+  };
+
+  methods = {
+    // tab栏切换
+    onTabChange(e) {
+      this.active = e.detail.index
+    }
+  };
+
+  events = {};
+
+  onLoad() {}
+}
 </script>
+
+<style lang="less">
+.footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  .red-font {
+    color: #d81e06;
+    font-weight: 700;
+  }
+}
+</style>

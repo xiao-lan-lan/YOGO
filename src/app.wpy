@@ -101,7 +101,9 @@ export default class extends wepy.app {
       // 按钮
       'van-button': './assets/vant/button/index',
       // toast
-      'van-toast': './assets/vant/toast/index'
+      'van-toast': './assets/vant/toast/index',
+      // panel面板
+      'van-panel': './assets/vant/panel/index'
     }
   };
 

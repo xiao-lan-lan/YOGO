@@ -1,0 +1,41 @@
+<template>
+  <view>
+    <!-- 订单列表 -->
+    <van-panel title="订单号 xxxxx" use-footer-slot>
+      <view>
+       
+          <van-card
+            num="{{item.count}}"
+            price="{{item.price}}"
+            title="{{item.title}}"
+            thumb="{{ item.img }}"
+          />
+      </view>
+      <view slot="footer" class="footer">
+        <text>商品数量 ：<text class="red-font">{{ item.count }} 件</text></text>
+        <text>订单总价 ：<text class="red-font">{{ item.count*item.price }} 元</text></text>
+      </view>
+    </van-panel>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+export default class extends wepy.component {
+  props = {
+    item: Object
+  };
+}
+</script>
+
+<style lang="less">
+.footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  .red-font {
+    color: #d81e06;
+    font-weight: 700;
+  }
+}
+</style>
