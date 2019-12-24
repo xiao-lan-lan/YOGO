@@ -154,6 +154,14 @@ export default class Index extends wepy.page {
 
     // 支付
     async onPay() {
+      // 非法判断
+      if (!this.address.provinceName) {
+        return wepy.myToast('请选择地址')
+      }
+      if (this.allPrice === 0) {
+        return wepy.myToast('商品总价不能为0')
+      }
+
       // 1.拿订单编号
       const orderRes = await wepy.post('my/orders/create', {
         order_price: this.allPrice / 100,
