@@ -295,6 +295,12 @@ export default class extends wepy.app {
           title: '数据加载中'
           // mask: true
         })
+
+        // 统一设置token,只有带my的接口需要token
+        if (p.url.includes('my')) {
+          p.header = {...p.header, Authorization: this.globalData.token}
+        }
+
         // 必须返回OBJECT参数对象，否则无法发送请求到服务端
         return p
       },
@@ -323,11 +329,10 @@ export default class extends wepy.app {
   }
 
   onLaunch() {
-    console.log(this.globalData.token)
-
     this.getAddress()
     this.getHistory()
     this.getCar()
+    this.getToken()
   }
 }
 </script>

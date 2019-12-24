@@ -3,7 +3,7 @@
     <!-- 地址 -->
 
     <!-- 显示地址 -->
-    <view class="address" wx:if="{{address.userName}}">
+    <view class="address" wx:if="{{address.userName}}" @tap="onChooseAddress">
       <view class="phone">
         <text>收货人：{{ address.userName }}</text>
         <view>联系电话：{{ address.telNumber }}<van-icon name="arrow"/></view>
@@ -42,7 +42,7 @@
     <van-submit-bar
       price="{{ allPrice }}"
       button-text="支付"
-      bind:submit="onSubmit"
+      @tap="onPay"
       wx:if="{{token}}"
     ></van-submit-bar>
 
@@ -145,6 +145,41 @@ export default class Index extends wepy.page {
 
       // 5.异步刷新页面
       this.$apply()
+    },
+
+    // 支付
+    async onPay() {
+      // 1.拿订单编号
+      const orderRes = await wepy.post('my/orders/create', {
+        order_price: this.allPrice / 100,
+        consignee_addr: this.address.provinceName + this.address.cityName + this.address.countyName + this.address.detailInfo,
+        goods: this.checkedGoods.map(item => {
+          return {
+            goods_id: item.id,
+            goods_number: item.count,
+            goods_price: item.price
+          }
+        })
+      })
+
+      // 2.拿支付参数
+      await wepy.post('my/orders/req_unifiedorder', {
+        order_number: orderRes.data.meta.status
+      })
+
+      // 3.调用小程序支付接口
+      const res = await wepy.requestPayment({
+        'timeStamp': '1564730510',
+        'nonceStr': 'SReWbt3nEmpJo3tr',
+        'package': 'prepay_id=wx02152148991420a3b39a90811023326800',
+        'signType': 'MD5',
+        'paySign': '3A6943C3B865FA2B2C825CDCB33C5304'
+      }).catch(err => err)
+
+      // 4.支付成功,倒计时3秒,跳转订单列表
+      if (res.errMsg !== 'requestPayment:fail no permission') {
+        return wepy.myToast('支付失败')
+      }
     }
   };
 
