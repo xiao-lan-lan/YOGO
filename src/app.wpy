@@ -97,7 +97,9 @@ export default class extends wepy.app {
       // 提交订单
       'van-submit-bar': './assets/vant/submit-bar/index',
       // 滑动单元格
-      'van-swipe-cell': './assets/vant/swipe-cell/index'
+      'van-swipe-cell': './assets/vant/swipe-cell/index',
+      // 按钮
+      'van-button': './assets/vant/button/index'
     }
   };
 
@@ -148,7 +150,7 @@ export default class extends wepy.app {
 
     if (res.errMsg === 'getStorage:ok') {
       this.globalData.historyList = res.data
-      console.log('get launch')
+      // console.log('get launch')
       // console.log(this.globalData.address)
     }
   }

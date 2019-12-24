@@ -1,6 +1,23 @@
 <template>
   <view class="container">
-    下单
+    
+    <!-- 地址 -->
+
+    <!-- 选择地址 -->
+    <van-button type="warning" size="large">请选择收货地址</van-button>
+
+    <!-- 显示地址 -->
+    <view class="address">
+      <view class="phone">
+        <text>收货人：{{address.userName}}</text>
+        <view>联系电话：{{address.telNumber}}<van-icon name="arrow" /></view>
+      </view>
+      <view>收货地址：{{address.provinceName+address.cityName+address.countyName+address.detailInfo}}</view>
+    </view>
+
+    <!-- 分割线 -->
+    <image src="/assets/icons/cart_border@2x.png" class="line"></image>
+
   </view>
 </template>
 
@@ -21,7 +38,11 @@
     }
 
     computed = {
+      address() {
+        console.log(this.$parent.globalData.address)
   
+        return this.$parent.globalData.address
+      }
     }
 
     methods = {
@@ -37,3 +58,19 @@
     }
   }
 </script>
+
+<style lang="less">
+.address {
+  padding: 0 20rpx;
+  font-size: 24rpx;
+  line-height: 60rpx;
+  .phone {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+.line {
+  width: 100%;
+  height: 10rpx;
+}
+</style>
